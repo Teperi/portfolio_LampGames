@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+.logo_nav {
+    margin: 5px 16px;
+    height: 50px;
+    width: auto;
+}
+
+.nav-wrapper {
+    font-family: 'Do Hyeon', sans-serif;
+    vertical-align: center;
+}
