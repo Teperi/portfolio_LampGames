@@ -1,11 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 .logo_nav {
     margin: 5px 16px;
     height: 50px;
     width: auto;
+    vertical-align: middle;
 }
 
-.nav-wrapper {
+.dohyeonfont {
     font-family: 'Do Hyeon', sans-serif;
-    vertical-align: center;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: 'Spoqa Han Sans', sans-serif;
+}
+
+main {
+    flex: 1 0 auto;
 }
