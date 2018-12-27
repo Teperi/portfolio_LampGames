@@ -15,47 +15,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <!-- html 각각 관리(navbar, footer 등) -->
+    <script src="shareHTML/includeHTML.js"></script>
 
 </head>
 
 <body>
     <header>
         <!-- 네비게이션 바 -->
-        <nav>
-            <div class="nav-wrapper amber lighten-2 dohyeonfont">
-                <!-- 로고 부분 -->
-                <a href="index.html" class="brand-logo grey-text text-darken-4">
-                    <img src="images/logo_black.png" class="logo_nav" alt="Lamp Games Logo">Lamp Games
-                </a>
-                <!-- 카테고리 부분 -->
-                <ul class="hide-on-med-and-down right">
-                    <li><a href="" class="grey-text text-darken-4">Review</a></li>
-                    <li><a href="" class="grey-text text-darken-4">Play Game</a></li>
-                    <li><a href=""><i class="material-icons grey-text text-darken-4">person</i></a></li>
-                    <li>
-                        <form>
-                            <div class="input-field">
-                                <input id="search" type="search" required>
-                                <label class="label-icon" for="search">
-                                    <i class="material-icons grey-text text-darken-4">search</i>
-                                </label>
-                                <i class="material-icons">close</i>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <nav include-html="shareHTML/nav.html"> </nav>
     </header>
+
     <main>
         <!-- <div class="parallax-container">
             <div class="parallax"><img src="images/gowtestimage.jpg"></div>
         </div> -->
-
         <div class="container">
 
-            <blockquote class="dohyeonfont">
+            <blockquote class="dohyeon-font">
                 <h1>Review</h1>
             </blockquote>
 
@@ -64,12 +41,12 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip blue white-text">
                                 루리웹
                             </div>
@@ -81,12 +58,12 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip blue white-text">
                                 루리웹
                             </div>
@@ -98,12 +75,12 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip teal white-text">
                                 this is game
                             </div>
@@ -115,12 +92,12 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip teal white-text">
                                 test
                             </div>
@@ -132,23 +109,23 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip teal white-text">
                                 Tag
                             </div>
                         </div>
                     </div>
                 </div>
-
+                <a class="waves-effect waves-light btn col s12">더보기</a>
             </div>
-            <a class="waves-effect waves-light btn">button</a>
 
-            <blockquote class="dohyeonfont">
+
+            <blockquote class="dohyeon-font">
                 <h1>Play Games</h1>
             </blockquote>
             <div class="row">
@@ -156,12 +133,12 @@
                     <div class="card">
                         <div class="card-image">
                             <img src="images/gowtestimage.jpg">
-                            <span class="card-title dohyeonfont">2018 GOTY는 God Of War</span>
+                            <span class="card-title dohyeon-font">2018 GOTY는 God Of War</span>
                         </div>
                         <div class="card-content">
                             <p>2018년 GOTY 수상작이 나왔다. 우승자는...</p>
                         </div>
-                        <div class="card-action dohyeonfont">
+                        <div class="card-action dohyeon-font">
                             <div class="chip teal white-text">
                                 Tag
                             </div>
@@ -174,34 +151,12 @@
 
         </div>
 
+        <footer include-html="shareHTML/footer.html"> </footer>
 
-
-
-
-        <footer class="page-footer blue-grey darken-1">
-            <div class="container">
-                <div class="row">
-                    <div class="col l6 s12">
-                        <h5 class="white-text">Footer Content</h5>
-                        <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-                    </div>
-                    <div class="col l4 offset-l2 s12">
-                        <h5 class="white-text">Links</h5>
-                        <ul>
-                            <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-copyright blue-grey darken-3">
-                <div class="container">
-                    © 2019. Teperi31. All rights reserved.
-                    <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-                </div>
-            </div>
-        </footer>
-
-        <script src="app.js"></script>
+        <!-- HTML 공통 파일 포함 -->
+        <script>
+            includeHTML();
+        </script>
     </main>
 
 </body>
