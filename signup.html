@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material 아이콘 사용하기 위한 용도 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lamp Games - Review & Play Games!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 개인용 css 파일 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="login.css" />
+</head>
+
+<body class="amber lighten-2">
+    <div class="container">
+        <div class="row"></div>
+        <div class="valign-wrapper row">
+            <div class="card col s10 pull-s1 m6 pull-m3 l4 pull-l4 hoverable">
+                <form action="php/signupDB.php" method="POST">
+                    <div class="card-content">
+
+                        <span class="card-title center dohyeon-font">회원 가입</span>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person</i>
+                                <input id="id" name="id" type="text" class="validate" required>
+                                <label for="id">ID</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">mail_outline</i>
+                                <input id="email" name="email" type="email" class="validate" required>
+                                <label for="id">E-mail</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person</i>
+                                <input id="nickName" name="nickName" type="text" class="validate" required>
+                                <label for="nickName">닉네임</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock_outline</i>
+                                <input id="passwordFirst" name="passwordFirst" type="password" class="validate" required>
+                                <label for="passwordFirst">비밀번호</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">lock_outline</i>
+                                <input id="passwordConfirm" name="passwordConfirm" type="password" class="validate" required>
+                                <label for="passwordConfirm">비밀번호 확인</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <div class="input-field col s6">
+                            <button class="btn waves-effect waves-light col s12 jua-font" type="submit" name="action">회원 가입</button>
+                        </div>
+                        <div class="input-field col s6">
+                            <button class="btn waves-effect waves-light col s12 jua-font" type="reset" name="action">초기화</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
