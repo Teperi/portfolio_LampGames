@@ -19,3 +19,32 @@
 body {
     font-family: 'Spoqa Han Sans', sans-serif;
 }
+
+.parallax-container {
+    width: 100%;
+    top: -10px;
+}
+
+img {
+    object-fit: cover;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #cfd8dc;
+    margin: 10px 0;
+}
+
+.cardHorizen {
+    height: 200px;
+}
+
+.cardHorizenImg {
+    height: 100%;
+    width: 100%;
+}
+
+.cardHorizenImgDiv {
+    height: 200px;
+    width: 350px;
+}
