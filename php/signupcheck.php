@@ -1,5 +1,5 @@
 <?php
-require_once 'connectDB.php';
+require_once '/php/connectDB.php';
 
 if( isset($_POST['id']) ){
     $uid = $_POST["id"];

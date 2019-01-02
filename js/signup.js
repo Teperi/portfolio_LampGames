@@ -113,7 +113,7 @@ function idcheck() {
 function getUserInfofromEmail(str, cFunction) {
     var data = 'email=' + str;
     var xhr = new XMLHttpRequest();
-    var url = "../php/signupcheck.php"
+    var url = "/php/signupcheck.php"
     xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             cFunction(this);
@@ -162,7 +162,7 @@ function emailcheck() {
 function getUserInfofromNick(str, cFunction) {
     var data = 'nick=' + str;
     var xhr = new XMLHttpRequest();
-    var url = "../php/signupcheck.php"
+    var url = "/php/signupcheck.php"
     xhr.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             cFunction(this);

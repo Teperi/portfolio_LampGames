@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -14,16 +15,16 @@
     <title>Lamp Games - Review & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
-    <link rel="stylesheet" type="text/css" media="screen" href="../main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
-    <script src="../shareHTML/includeHTML.js"></script>
+    <script src="/shareHTML/includeHTML.js"></script>
 
 </head>
 
 <body>
     <header>
         <!-- 네비게이션 바 -->
-        <nav include-html="../shareHTML/nav.html"> </nav>
+        <nav include-html="/shareHTML/nav.html"> </nav>
     </header>
     <main>
         <div class="container">
@@ -35,7 +36,7 @@
                     <a href="/review/review2.html">
                         <div class="card horizontal hoverable cardHorizen">
                             <div class="card-image cardHorizenImgDiv">
-                                <img src="images/fortnite-xbox-fortnight-game-release.jpg" class="cardHorizenImg">
+                                <img src="/images/fortnite-xbox-fortnight-game-release.jpg" class="cardHorizenImg">
 
                             </div>
                             <div class="card-stacked">
@@ -56,10 +57,10 @@
 
                 <div class="row">
                     <div class="col s12">
-                        <a href="/review/review1.html">
+                        <a href="/review/review_content.html">
                             <div class="card horizontal hoverable cardHorizen">
                                 <div class="card-image cardHorizenImgDiv">
-                                    <img src="images/gowtestimage.jpg" class="cardHorizenImg">
+                                    <img src="/images/gowtestimage.jpg" class="cardHorizenImg">
 
                                 </div>
                                 <div class="card-stacked">
@@ -83,14 +84,16 @@
                 </div>
 
 
+            </div>
+        </div>
 
 
 
-                <footer include-html="../shareHTML/footer.html"> </footer>
-                <!-- HTML 공통 파일 포함 -->
-                <script>
-                    includeHTML();
-                </script>
+        <footer include-html="/shareHTML/footer.html"> </footer>
+        <!-- HTML 공통 파일 포함 -->
+        <script>
+            includeHTML();
+        </script>
     </main>
 
 </body>

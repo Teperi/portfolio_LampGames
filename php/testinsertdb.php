@@ -1,5 +1,5 @@
 <?php
-require_once 'connectDB.php';
+require_once '/php/connectDB.php';
 
 
 $hash = password_hash('33',PASSWORD_DEFAULT);

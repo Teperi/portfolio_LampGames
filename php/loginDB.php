@@ -1,3 +1,8 @@
+<?php
+if(isset($_POST["rememberme"])){
+  session_set_cookie_params(7 * 24 * 60 * 60);
+}
+session_start();?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +18,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script>
 </head>
-<body class="amber lighten-2">
+<body class="yellow lighten-2">
 <?php
 // DB 접속해주는 PHP 파일 $conn 으로 접속되어있음.
 require_once 'connectDB.php';
@@ -53,6 +58,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 history.back();
             </script>";
         } else {
+            $_SESSION['user_id'] = $id;
+            $_SESSION['nickName'] = $row['nickName'];
             $nickName = $row['nickName'];
             echo "<script>
                 alert('$nickName 님 환영합니다.');

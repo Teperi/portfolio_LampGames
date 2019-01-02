@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +15,7 @@
     <title>Lamp Games - Review & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
-    <link rel="stylesheet" type="text/css" media="screen" href="login.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/login.css" />
 
 </head>
 
@@ -23,26 +24,26 @@
         <div class="row"></div>
         <div class="valign-wrapper row">
             <div class="card col s10 pull-s1 m8 pull-m2 l6 pull-l3 hoverable">
-                <form action="php/signupDB.php" onsubmit="return comfirmcomplete();" method="POST" id="signupForm">
+                <form action="/php/signupDB.php" onsubmit="return comfirmcomplete();" method="POST" id="signupForm">
                     <div class="card-content">
 
                         <span class="card-title center dohyeon-font">회원 가입</span>
                         <div class="row">
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">person</i>
-                                <input id="id" name="id" type="text" class="validate" autofocus>
+                                <input id="id" name="id" type="text" autocomplete="off" class="validate" autofocus>
                                 <label for="id">ID</label>
                                 <span id="iderror" class="helper-text"></span>
                             </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">mail_outline</i>
-                                <input id="email" name="email" type="text" class="validate">
+                                <input id="email" name="email" type="text" autocomplete="off" class="validate">
                                 <label for="email">E-mail</label>
                                 <span id="emailerror" class="helper-text"></span>
                             </div>
                             <div class="input-field col s12">
                                 <i class="material-icons prefix">person</i>
-                                <input id="nickName" name="nickName" type="text" class="validate">
+                                <input id="nickName" name="nickName" type="text" autocomplete="off" class="validate">
                                 <label for="nickName">닉네임</label>
                                 <span id="nickNameerror" class="helper-text"></span>
                             </div>

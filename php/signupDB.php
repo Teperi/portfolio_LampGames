@@ -1,5 +1,6 @@
 <?php
-require_once 'connectDB.php';
+require_once '/php/connectDB.php';
+session_start();
 
 $id = $email = $hash = $nickname = $password = "";
 // 웹페이지 방식에서 POST 전송이 되었을 때만 작업 시행
