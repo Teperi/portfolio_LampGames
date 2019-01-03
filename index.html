@@ -18,15 +18,12 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
-
-    <!-- 세션 확인 -->
-    <?php require_once '/usr/local/apache2/htdocs/php/login_check.php'; ?>
 </head>
 
 <body>
     <header>
         <!-- 네비게이션 바 -->
-        <nav include-html="/shareHTML/nav.html"> </nav>
+        <nav include-html="/shareHTML/nav.php"> </nav>
     </header>
     <main>
         <!-- <div class="parallax-container">
@@ -108,7 +105,7 @@
 
         </div>
 
-        <footer include-html="/shareHTML/footer.html"> </footer>
+        <footer include-html="/shareHTML/footer.php"> </footer>
 
         <!-- HTML 공통 파일 포함 -->
         <script>

@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url('https://fonts.googleapis.com/css?family=Jua');
+.logo_nav {
+    margin: 5px 16px;
+    height: 50px;
+    width: auto;
+    vertical-align: middle;
+}
+
+.dohyeon-font {
+    font-family: 'Do Hyeon', sans-serif;
+}
+
+.jua-font {
+    font-family: 'Jua', sans-serif;
+}
+
+body {
+    font-family: 'Spoqa Han Sans', sans-serif;
+}
+
+img {
+    object-fit: cover;
+}
+
+.cardHorizen {
+    height: 200px;
+}
+
+.cardHorizenImg {
+    height: 100%;
+    width: 100%;
+}
