@@ -1,6 +1,8 @@
 <?php
 if(isset($_POST["rememberme"])){
-  session_set_cookie_params(7 * 24 * 60 * 60);
+    $duration = 7 * 24 * 60 * 60;
+    ini_set('session.gc_maxlifetime', $duration);
+    session_set_cookie_params($duration);
 }
 session_start();?>
 <!DOCTYPE html>
