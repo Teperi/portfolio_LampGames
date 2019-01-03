@@ -65,7 +65,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $nickName = $row['nickName'];
             echo "<script>
                 alert('$nickName 님 환영합니다.');
-                document.location.href='../index.html'
+                document.location.href='/index.html'
             </script>";
         }
     }

@@ -31,51 +31,64 @@
             <blockquote class="dohyeon-font">
                 <h1>Review</h1>
             </blockquote>
-            <div class="row">
+            <div class="row" id="reviewlist">
                     <!-- 게시판 리스트 -->
+                    <div class="col s12" id="test">
                     <?php
-                        require_once $_SERVER["DOCUMENT_ROOT"].'/php/connectDB.php';
-                        
-                        $limitNumber = 1;
-                        $query = 'SELECT * FROM reviewList ORDER BY reg_date DESC LIMIT ' . $limitNumber;
-                        $result_sql = mysqli_query($conn,$query);
-                        if(mysqli_num_rows($result_sql) > 0) {
-                            while($row = $result_sql->fetch_assoc()) {
-                                $categoryColor;
-                                if($row['category'] == '루리웹') {
-                                    $categoryColor = 'blue';
-                                } else {
-                                    $categoryColor = 'purple';
-                                }
-
-                                echo '<div class="col s12">
-                                            <a href="review_content.php">
-                                                <div class="card horizontal hoverable cardHorizen">
-                                                    <div class="card-image col s3" style="padding:0px">
-                                                        <img src="../images/fortnite-xbox-fortnight-game-release.jpg" class="cardHorizenImg">
-                                                    </div>
-                                                    <div class="card-stacked col s9 truncate">
-                                                        <div class="card-content">
-                                                            <span class="card-title grey-text text-darken-4 dohyeon-font truncate" id="reviewList_title">'.$row['title'].'</span>
-                                                            <p class="grey-text text-darken-4 truncate">test</p>
-                                                        </div>
-                                                        <div class="card-action dohyeon-font">
-                                                            <div class="chip '. $categoryColor .' white-text truncate">'.$row['category'].'</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>';
-                            }
-                        }
+                     $limitNumber = 0;
+                        require_once $_SERVER["DOCUMENT_ROOT"].'/php/reviewList.php';
                     ?>
+                    </div>
+
                     <div class="col s12">
-                        <button class='waves-effect btn-flat indigo white-text hoverable col s12' onclick>더보기</button>
+                        <button id="more" name="more" class='waves-effect btn-flat indigo white-text hoverable col s12' onclick=myFunction()>더보기</button>
                     </div>
                     
             </div>
         </div>
 
+        <script>
+            var add = (function () {
+                var counter = 0;
+                    return function () {return counter += 1;}
+                })();
+
+                function myFunction(){
+                    var countNum = add();
+                    document.getElementById('more').classList.add('disabled');
+                    sendcountnum(countNum, resultout);
+                }
+                
+                // 닉네임 중복 확인 데이터 가져오기
+                function sendcountnum(number, callback) {
+                    var data = 'morecount=' + number;
+                    var xhr = new XMLHttpRequest();
+                    var url = "/php/reviewList.php"
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            callback(this);
+                        }
+                    }
+                    xhr.open('POST', url);
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                    xhr.send(data);
+                }
+
+                function resultout(xhttp) {
+                    if(xhttp.responseText.length !=4) {
+                        document.getElementById('test').innerHTML += xhttp.responseText;
+                        document.getElementById('more').classList.remove('disabled');
+                        // var card = document.createElement("div");
+                        // card.classList.add("col");
+                        // card.classList.add("s12");
+                        parser = new DOMParser();
+                        htmlDoc = parser.parseFromString(xhttp.responseText,"text/html");
+                        console.log(htmlDoc.body.innerText.trim());
+                        // card.appendChild(htmlDoc.body.innerHTML);
+                        // document.getElementById('test').appendChild(htmlDoc.body.innerHTML);
+                    }  
+                }
+        </script>
 
 
         <footer include-html="../shareHTML/footer.php"> </footer>
