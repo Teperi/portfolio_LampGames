@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php session_start();
-?>
+<?php session_start();?>
 <head>
     <meta charset="utf-8" />
     <!-- Compiled and minified CSS -->

@@ -21,7 +21,7 @@
             }
 
             echo '
-                        <a href="review_content.php">
+                        <a href="review_content.php?listidx='.$row['listidx'].'">
                             <div class="card horizontal hoverable cardHorizen">
                                 <div class="card-image col s3" style="padding:0px">
                                     <img src="../images/fortnite-xbox-fortnight-game-release.jpg" class="cardHorizenImg">
