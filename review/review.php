@@ -16,7 +16,7 @@
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/list.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
-    <script src="../shareHTML/includeHTML.js"></script>
+    <script src="/shareHTML/includeHTML.js"></script>
 
 </head>
 

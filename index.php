@@ -35,48 +35,45 @@
                 <h1>Review</h1>
             </blockquote>
 
-            <div class="row">
-                <div class="col s12 m6">
-                    <a href="/review/review_content.html">
-                        <div class="card hoverable">
-                            <div class="card-image">
-                                <img src="/images/gowtestimage.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span class="card-title dohyeon-font black-text truncate">더 게임 어워드 2018년 GOTY, ‘갓 오브 워’ 수상</span>
-                                <p class="black-text truncate">세계 5대 GOTY(Game of the Year)로 꼽히는 ‘더 게임 어워드’에서 2018년 최고의 게임을 선정했다. 쟁쟁한 경쟁자를 뚫고 GOTY를 거머쥔 게임은 바로 ‘갓 오브 워’다.</p>
-                            </div>
-                            <div class="card-action dohyeon-font">
-                                <div class="chip purple white-text truncate">
-                                    게임메카
-                                </div>
-                            </div>
-                        </div>
-                    </a>
+            <div class="row col s6">
+                <?php 
+                    require_once $_SERVER["DOCUMENT_ROOT"].'/php/connectDB.php';
 
-                </div>
+                    $sql = 'SELECT * FROM reviewList ORDER BY reg_date DESC limit 4';
+                    $result = mysqli_query($conn, $sql);
 
-                <div class="col s6 m3">
-                    <a href="/review/review2.html">
-                        <div class="card hoverable">
-                            <div class="card-image">
-                                <img src="/images/fortnite-xbox-fortnight-game-release.jpg">
-                            </div>
-                            <div class="card-content">
-                                <span class="card-title dohyeon-font truncate black-text">포트나이트, 2018년 마지막 업데이트 실시</span>
-                                <p class="truncate black-text">한 해 동안 전 세계적으로 큰 사랑을 받은
-                                    <포트나이트>가 2018년 마지막 업데이트를 실시했다.</p>
-                            </div>
-                            <div class="card-action dohyeon-font">
-                                <div class="chip blue white-text truncate">
-                                    루리웹
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                    if(mysqli_num_rows($result) > 0){
+                        while($row = $result->fetch_assoc()) {
+                            $categoryColor;
+                            if($row['ref'] == '루리웹') {
+                                $categoryColor = 'blue';
+                            } else {
+                                $categoryColor = 'purple';
+                            }
 
-                <a class="waves-effect waves-light btn-large col s12 hoverable jua-font" href="/review.html" style="font-size:large;">더보기</a>
+                            echo '<div class="col s3">
+                                <a href="/review/review_content.php?listidx='.$row['listidx'].'">
+                                    <div class="card hoverable">
+                                        <div class="card-image">
+                                            <img src="'.$row['mainimg'].'">
+                                        </div>
+                                        <div class="card-content">
+                                            <span class="card-title dohyeon-font black-text truncate">'.$row['title'].'</span>
+                                            <p class="black-text truncate">'.$row['precontent'].'</p>
+                                        </div>
+                                        <div class="card-action dohyeon-font">
+                                            <div class="chip '.$categoryColor.' white-text truncate">
+                                                '.$row['ref'].'
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>';
+                        }
+                    }                    
+                ?>
+                
+                <a class="waves-effect waves-light btn-large col s12 hoverable jua-font" href="/review/review.php" style="font-size:large;">더보기</a>
             </div>
 
             <!-- 추후 게임 추가시 사용 예정
