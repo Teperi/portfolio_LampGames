@@ -21,7 +21,7 @@
             }
 
             echo '
-                        <a href="/review/review_content.php?listidx='.$row['listidx'].'">
+                        <a href="/review/review_content.html?listidx='.$row['listidx'].'">
                             <div class="card horizontal hoverable cardHorizen">
                                 <div class="card-image col s3" style="padding:0px">
                                     <img src="'.$row['mainimg'].'" class="cardHorizenImg">
