@@ -1,4 +1,4 @@
-CREATE TABLE reviewList (
+CREATE TABLE newsList (
   listidx int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '리뷰 번호',
   title varchar(256) NOT NULL COMMENT '제목',
   views int(11) NOT NULL DEFAULT 0,
@@ -11,7 +11,7 @@ CREATE TABLE reviewList (
   UNIQUE (listidx)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO reviewList (
+INSERT INTO newsList (
     title, 
     mainimg, 
     reg_date, 
@@ -35,7 +35,7 @@ VALUES (
     <p style="font-size: large;">
         그 중에서도 가장 눈길을 끄는 것이 바로 2018년 GOTY다. \'더 게임 어워드\' GOTY 후보작은 뛰어난 완성도를 자랑한 플랫포머 인디게임 \'셀레스트\', 고대 그리스를 구현하는데 성공한 \'어쌔신 크리드: 오디세이\', 북유럽 신화를 배경으로 하는 호쾌한 액션게임 \'갓 오브 워\', 완성도를 크게 끌어 올린 \'몬스터 헌터: 월드\', 오픈월드 명가 락스타게임즈의 \'레드 데드 리뎀션 2\', 그리고 마블코믹스 최고의 영웅을 재해석한 \'스파이더맨\' 6종이었다.<br><br>
     </p>
-    <img src="/images/gowreview1.jpg" class="center-block" alt="">
+    <img src="/images/gownews1.jpg" class="center-block" alt="">
     <p class="center">▲ \'갓 오브 워\' 스크린샷 (사진: 게임메카 촬영)</p>
     <br>
     <p style="font-size: large;">
@@ -48,7 +48,7 @@ VALUES (
         비록 GOTY는 가져가지 못했지만, 다른 후보작들도 여러 분야에서 상을 받았다. GOTY 유력 후보로 점쳐젔던 \'레드 데드 리뎀션 2\'는 최고의 내러티브 게임, 최고의 음악 게임, 최고의 음향 디렉션을 받았고, 주인공 \'아서 모건\'을 연기한 로저 클라크는 최고의 퍼포먼스 상을 받았다. \'셀레스트\' 역시 최고의 인디게임, 최고의 영향 상을 받았다.<br><br>
     </p>');
 
-INSERT INTO reviewList (
+INSERT INTO newsList (
     title, 
     mainimg, 
     reg_date, 
@@ -58,7 +58,7 @@ INSERT INTO reviewList (
     content)
 VALUES (
     '포켓몬 고, 신기능 힘입어 2018년 연매출 35% 성장',
-    '/images/pokemongoreview.jpg',
+    '/images/pokemongonews.jpg',
     '2019-01-04 11:07:26',
     '루리웹',
     'http://bbs.ruliweb.com/news/read/117256',
@@ -84,7 +84,7 @@ VALUES (
 );
 
 
-INSERT INTO reviewList (
+INSERT INTO newsList (
     title, 
     mainimg, 
     reg_date, 
@@ -111,7 +111,7 @@ VALUES (
     <p style="font-size: large;">
         붐박스의 음악 소리 반경 내 건설된 적의 구조물은 음파 공격을 받을 때마다 피해를 받아 파괴된다. 붐박스의 효과를 없애려면 무기를 이용해 붐박스를 쏴서 맞춰야 한다. <br><br>
     </p>
-    <img src="/images/pnreview2.jpg" class="center-block" alt="" width="100%">
+    <img src="/images/pnnews2.jpg" class="center-block" alt="" width="100%">
     <br>
     <p style="font-size: large;">
         한편, 새로운 한정 모드는 물론, 기존에 즐겼던 한정 모드를 플레이할 수 있는 \'14일간의 포트나이트\' 이벤트는 1월 2일 아침까지 즐길 수 있다. 대규모 팀 모드는 이틀에 한 번씩 변경되며, 소규모 팀 모드는 매일 새로운 모드를 만나볼 수 있다. 변경된 모드는 매일 오후 11시에 로그인하면 확인 가능하다. <br><br>
@@ -129,4 +129,4 @@ VALUES (
     </p>');
 
 -- 데이터 들어갔는지 확인용. (content 의 경우 너무 길어서 출력 확인 안함)
-select listidx, title, reg_date, ref from reviewList;
+select listidx, title, reg_date, ref from newsList;

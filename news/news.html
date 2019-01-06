@@ -12,13 +12,13 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lamp Games - Review & Play Games!!</title>
+    <title>Lamp Games - news & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/list.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
-
+    <script src="/js/materializecss.js"></script>
 </head>
 
 <body>
@@ -27,16 +27,18 @@
         <nav include-html="/shareHTML/nav.html"> </nav>
     </header>
     <main>
+        <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html">
+        </ul>
         <div class="container">
             <blockquote class="dohyeon-font">
-                <h1>Review</h1>
+                <h2>Game News</h2>
             </blockquote>
-            <div class="row" id="reviewlist">
+            <div class="row" id="newslist">
                 <!-- 게시판 리스트 -->
                 <div class="col s12" id="test">
                     <?php
                      $limitNumber = 0;
-                        require_once $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/reviewList.php';
+                        require_once $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/newsList.php';
                     ?>
                 </div>
 
@@ -65,7 +67,7 @@
             function sendcountnum(number, callback) {
                 var data = 'morecount=' + number;
                 var xhr = new XMLHttpRequest();
-                var url = "/php/DBtoView/reviewList.php"
+                var url = "/php/DBtoView/newsList.php"
                 xhr.onreadystatechange = function() {
                     if (this.readyState === 4 && this.status === 200) {
                         callback(this);

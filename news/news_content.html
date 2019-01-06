@@ -12,14 +12,14 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lamp Games - Review & Play Games!!</title>
+    <title>Lamp Games - news & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
     <!-- 이미지박스 처리 -->
-    <script src="/js/parallax.js"></script>
+    <script src="/js/materializecss.js"></script>
 
 </head>
 
@@ -28,10 +28,12 @@
         <!-- 네비게이션 바 -->
         <nav include-html="/shareHTML/nav.html"> </nav>
     </header>
+    <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html">
+    </ul>
 
 
     <?php 
-        include $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/reviewContent.php';
+        include $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/newsContent.php';
     ?>
 
 

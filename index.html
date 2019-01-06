@@ -12,28 +12,34 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lamp Games - Review & Play Games!!</title>
+    <title>Lamp Games - news & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
+    <script src="/js/materializecss.js"></script>
 </head>
 
 <body>
     <header include-html="/shareHTML/nav.html">
+
     </header>
     <main>
+
+        <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html">
+        </ul>
+
         <div class="container">
 
             <blockquote class="dohyeon-font">
-                <h1>Review</h1>
+                <h2>Game News</h2>
             </blockquote>
 
-            <div class="row col s6">
-                <?php include $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/indexReviewList.php';?>
+            <div class="row col s12">
+                <?php include $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/indexNewsList.php';?>
 
-                <a class="waves-effect waves-light btn-large col s12 hoverable jua-font" href="/review/review.html" style="font-size:large;">더보기</a>
+                <a class="waves-effect waves-light btn-large col s12 hoverable jua-font" href="/news/news.html" style="font-size:large;">더보기</a>
             </div>
 
             <!-- 추후 게임 추가시 사용 예정

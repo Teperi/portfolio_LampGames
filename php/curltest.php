@@ -53,7 +53,7 @@ function newstoserver($list)
             sleep(1);
         } else {
             //sql 쿼리문 만들기
-            $sql = "INSERT INTO reviewList (
+            $sql = "INSERT INTO newsList (
             title,
             mainimg,
             reg_date,
@@ -70,7 +70,7 @@ function newstoserver($list)
                 '" . $precontent . "',
                 '" . $content . "'
             ) AS tmp
-            WHERE NOT EXISTS (SELECT * FROM reviewList WHERE title = '" . $title . "') LIMIT 1";
+            WHERE NOT EXISTS (SELECT * FROM newsList WHERE title = '" . $title . "') LIMIT 1";
             // 쿼리문 실행 및 결과 출력
             $result = mysqli_query($conn, $sql);
             if ($result) {

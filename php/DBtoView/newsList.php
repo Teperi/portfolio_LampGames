@@ -21,14 +21,14 @@ if (mysqli_num_rows($result_sql) > 0) {
             $categoryColor = 'purple';
         }
 
-        echo '<a href="/review/review_content.html?listidx=' . $row['listidx'] . '">
+        echo '<a href="/news/news_content.html?listidx=' . $row['listidx'] . '">
                     <div class="card horizontal hoverable cardHorizen">
                         <div class="card-image col s3" style="padding:0px">
                             <img src="' . $row['mainimg'] . '" class="cardHorizenImg">
                         </div>
                         <div class="card-stacked col s9 truncate">
                             <div class="card-content">
-                                <span class="card-title grey-text text-darken-4 dohyeon-font truncate" id="reviewList_title">' . $row['title'] . '</span>
+                                <span class="card-title grey-text text-darken-4 dohyeon-font truncate" id="newsList_title">' . $row['title'] . '</span>
                                 <p class="grey-text text-darken-4 truncate">' . $row['precontent'] . '</p>
                             </div>
                             <div class="card-action dohyeon-font">

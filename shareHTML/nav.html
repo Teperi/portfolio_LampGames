@@ -7,22 +7,27 @@
         </a>
 
 
+        <div class="container show-on-large">
+            <ul class="left show-on-large">
+                <li>
+                    <a data-target="slide-out" class="sidenav-trigger show-on-large">
+                        <i class="material-icons grey-text text-darken-4">menu</i>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-
-        <ul class="hide-on-med-and-down right">
+        <ul class="right hide-on-med-and-down">
             <?php 
             if(isset($_SESSION['user_id'])){
                 if($_SESSION['user_id'] == 'admin'){
-                    echo '<li><a href="/userinfo/sitesetting.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>';
+                    echo '<li><a href="/userinfo/sitesetting.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
                 } else {
-                    echo '<li><a href="/userinfo/myinfo.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>';
-                }
-            } else {
-                echo '<li><a href="/login.html"><i class="material-icons grey-text text-darken-4">person</i></a></li>';
-            }
-            ?>
+                    echo '<li><a href="/userinfo/myinfo.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
+                } 
+            } else { echo '<li><a href="/login.html"><i class="material-icons grey-text text-darken-4">person</i></a></li>'; } ?>
 
-            <li>
+            <li style="height:64px;">
                 <form>
                     <div class="input-field">
                         <input id="search" type="search" required>
@@ -33,34 +38,9 @@
                     </div>
                 </form>
             </li>
+
         </ul>
 
     </div>
+
 </nav>
-
-<!-- TODO: 사이드바 기능 추가 (1차 실패 2019.01.06)-->
-<!-- <div class="container">
-    <a data-target="slide-out" href="#" class="sidenav-trigger">
-        <i class="material-icons">menu</i>
-    </a>
-</div> -->
-
-<ul id="slide-out" class="sidenav">
-    <li>
-        <div class="user-view">
-            <div class="background">
-                <img src="images/office.jpg">
-            </div>
-            <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-            <a href="#name"><span class="white-text name">John Doe</span></a>
-            <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
-        </div>
-    </li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-</ul>
