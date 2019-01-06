@@ -1,11 +1,14 @@
 <?php
 require_once $_SERVER["DOCUMENT_ROOT"] . '/php/connectDB.php';
-
+$query;
+$rowcount;
 if (isset($_POST['morecount'])) {
     $limitNumber = $_POST['morecount'];
-    $query = 'SELECT * FROM reviewList ORDER BY reg_date DESC LIMIT ' . ($limitNumber) . ',' . ($limitNumber);
+    $query = 'SELECT * FROM reviewList ORDER BY reg_date DESC LIMIT ' . (5 * $limitNumber) . ',' . 5;
+    $rowcount = 'SELECT COUNT(listidx) AS rowNum FROM reviewList';
 } else {
-    $query = 'SELECT * FROM reviewList ORDER BY reg_date DESC LIMIT 0, 1';
+    $query = 'SELECT * FROM reviewList ORDER BY reg_date DESC LIMIT 5';
+    $rowcount = 'SELECT COUNT(listidx) AS rowNum FROM reviewList';
 }
 
 $result_sql = mysqli_query($conn, $query);

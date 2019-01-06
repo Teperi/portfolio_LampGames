@@ -58,7 +58,6 @@ function getUserInfofromId(str, cFunction) {
         if (this.readyState === 4 && this.status === 200) {
             cFunction(this);
         }
-
     }
     xhr.open('POST', url);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');

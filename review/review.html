@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="col s12">
-                    <button id="more" name="more" class='waves-effect btn-flat indigo white-text hoverable col s12' onclick=myFunction()>더보기</button>
+                    <button id="more" name="more" class='waves-effect btn-large indigo white-text hoverable col s12' onclick=myFunction()>더보기</button>
                 </div>
 
             </div>
@@ -80,14 +80,7 @@
                 if (xhttp.responseText.length != 4) {
                     document.getElementById('test').innerHTML += xhttp.responseText;
                     document.getElementById('more').classList.remove('disabled');
-                    // var card = document.createElement("div");
-                    // card.classList.add("col");
-                    // card.classList.add("s12");
-                    parser = new DOMParser();
-                    htmlDoc = parser.parseFromString(xhttp.responseText, "text/html");
-                    console.log(htmlDoc.body.innerText.trim());
-                    // card.appendChild(htmlDoc.body.innerHTML);
-                    // document.getElementById('test').appendChild(htmlDoc.body.innerHTML);
+                    // TODO: 마지막 리스트 출력 이후 더보기 disabled 기능 출력
                 }
             }
         </script>

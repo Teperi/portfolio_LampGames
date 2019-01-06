@@ -25,10 +25,6 @@ body {
     top: -10px;
 }
 
-img {
-    object-fit: cover;
-}
-
 hr {
     border: 0;
     border-top: 1px solid #cfd8dc;
@@ -40,11 +36,16 @@ hr {
 }
 
 .cardHorizenImg {
-    height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 .cardHorizenImgDiv {
     height: 200px;
     width: 350px;
+}
+
+.cardVerticalImg {
+    height: 150px;
+    object-fit: cover;
 }
