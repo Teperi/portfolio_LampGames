@@ -6,6 +6,13 @@ function clickdelete(idx, title) {
     }
 }
 
+function checkdelete(arr) {
+    if (confirm('"' + arr.length + '"' + '개의 글을 삭제하시겠습니까?')) {
+
+        sendDelete(JSON.stringify(arr), callbackDelete);
+    }
+}
+
 function sendDelete(number, callback) {
     var data = 'idx=' + number;
     var xhr = new XMLHttpRequest();
@@ -21,5 +28,6 @@ function sendDelete(number, callback) {
 }
 
 function callbackDelete(xhttp) {
-    location.reload();
+    console.log(xhttp.responseText);
+    // location.reload();
 }

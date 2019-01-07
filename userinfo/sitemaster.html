@@ -16,9 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
-    <!-- html 각각 관리(navbar, footer 등) -->
-    <script src="/shareHTML/includeHTML.js"></script>
-    <script src="/js/materializecss.js"></script>
+
 
 </head>
 
@@ -28,42 +26,99 @@
         <nav include-html="/shareHTML/nav.html"> </nav>
     </header>
     <main>
-        <div class="row">
-            <div class="col s3">
-                <ul class="collection with-header">
-                    <li class="collection-header">
-                        <h4>관리자 페이지</h4>
-                    </li>
-                    <li class="collection-item active">뉴스 관리</li>
-                </ul>
-            </div>
-            <div class="col s9">
-                <ul class="collection with-header" id="newsList">
-                    <li class="collection-header">
-                        <p>
-                            <h4 style="display:inline">뉴스 관리</h4>
-                            <a class="waves-effect waves-light btn right" href="/login.html">로그아웃</a>
-                        </p>
-                    </li>
+        <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html">
+        </ul>
+        <div class="container">
+            <div class="row">
+                <div class="col s12"><br>
+                    <ul class="tabs tabs-fixed-width z-depth-1">
+                        <li class="tab"><a class="active grey-text text-darken-4" href="#">뉴스 관리</a></li>
+                        <li class="tab"><a class="grey-text text-darken-4" href="#">게임 관리</a></li>
+                    </ul>
+                </div>
 
-                    <?php include $_SERVER["DOCUMENT_ROOT"] . '/php/DBtoView/sitemasterNewsList.php'; ?>
-
-                </ul>
-                <div>
-                    <button id="more" name="more" class='waves-effect btn-large indigo white-text hoverable col s12' onclick=moreclick()>더보기</button>
+                <div class="col s12">
+                    <ul class="collection with-header" id="newsList">
+                        <li class="collection-header">
+                            <p>
+                                <h4 style="display:inline">뉴스 관리</h4>
+                                <a class="waves-effect waves-light btn right" href="/login.html">로그아웃</a>
+                            </p>
+                        </li>
+                        <li class="collection-item">
+                            <button id="deleteCheckNews" class="waves-effect waves-light btn-small disabled"><i class="material-icons">delete</i>선택 삭제</button>
+                        </li>
+                        <?php include $_SERVER["DOCUMENT_ROOT"] . '/php/DBtoView/sitemasterNewsList.php'; ?>
+                    </ul>
+                    <div>
+                        <button id="more" name="more" class='waves-effect btn-large indigo white-text hoverable col s12' onclick=moreclick()>더보기</button>
+                    </div>
                 </div>
             </div>
+
         </div>
 
 
         <footer include-html="/shareHTML/footer.html"> </footer>
 
         <!-- HTML 공통 파일 포함 -->
+        <!-- html 각각 관리(navbar, footer 등) -->
+        <script src="/shareHTML/includeHTML.js"></script>
+        <script src="/js/materializecss.js"></script>
         <script>
             includeHTML();
         </script>
         <script src="/js/sitemaster/sitemasterDelete.js"></script>
         <script src="/js/sitemaster/sitemasterNewsListMore.js"></script>
+        <script>
+            let deleteChecked = document.getElementById('deleteCheckNews');
+            let listidxSave = [];
+            document.addEventListener('DOMContentLoaded', function checkbox() {
+                // 클래스가 checkbox 라고 된 것을 다 모아서 변수에 담아둠
+                var checkboxlist = document.querySelectorAll('.checkbox');
+                // 개수만큼 for 실행
+                checkboxlist.forEach(element => {
+                    // 각각의 checkbox 에 클릭됬을 시 해야할 행동 정해주기
+                    element.addEventListener("click", function() {
+                        // 만약 체크되어있는 상태였다면
+                        if (element.getAttribute('checked')) {
+                            // 체크 해제
+                            element.removeAttribute('checked');
+                            // 체크 해제된 idx 값의 list index 받아오기
+                            var idx = listidxSave.indexOf(element.getAttribute('id'));
+                            // list 의 index 값 기준 삭제
+                            listidxSave.splice(idx, 1);
+                            // 삭제버튼 활성화 여부 체크
+                            deletebtn(listidxSave.length);
+                            console.log(listidxSave.toString());
+
+                            // 만약 체크가 안되있었다면
+                        } else {
+                            // 체크 설정
+                            element.setAttribute('checked', 'checked');
+                            // list 에 글 아이디 담기
+                            listidxSave.push(element.getAttribute('id'));
+                            // 삭제버튼 활성화 여부 체크
+                            deletebtn(listidxSave.length);
+                            console.log(listidxSave.toString());
+                        }
+                    })
+                });
+            });
+
+            function deletebtn(num) {
+                if (num == 0) {
+                    deleteChecked.classList.add('disabled');
+                } else {
+                    deleteChecked.classList.remove('disabled');
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+                deleteChecked.addEventListener("click", function() {
+                    checkdelete(listidxSave, callbackDelete);
+                })
+            });
+        </script>
     </main>
 </body>
 
