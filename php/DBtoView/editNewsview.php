@@ -47,8 +47,7 @@ if (mysqli_num_rows($result_sql) > 0) {
         </div>
         <div class="row">
             <div class="col s12">
-                <button class="waves-effect waves-light btn col s3 offset-s1" id="historyback">돌아가기</button>
-                <button class="waves-effect waves-light btn col s3 offset-s3" id="submit" type="submit">수정완료</button>
+                <button class="waves-effect waves-light btn col s6 offset-s3" id="submit" type="submit">수정완료</button>
             </div>
         </div>
     </form>

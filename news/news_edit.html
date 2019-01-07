@@ -62,12 +62,8 @@ if($_SESSION['user_id'] != 'admin' || !isset($_SESSION['user_id'])){
             let titletext = document.getElementById("title");
             let contenttext = document.getElementById("content");
             let Image = document.getElementById("uploadImage");
-            let backbutton = document.getElementById("historyback");
             let submitbutton = document.getElementById("submit")
 
-            submitbutton.addEventListener('click', function() {
-
-            });
 
             function sendcountnum(number, callback) {
                 var data = 'morecount=' + number;

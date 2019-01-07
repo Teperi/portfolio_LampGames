@@ -26,17 +26,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mkdir($folder);
         }
 
-        move_uploaded_file($_FILES['d_file']['tmp_name'], $path);
+        $fileupload = move_uploaded_file($_FILES['d_file']['tmp_name'], $path);
     }
-
-    $sql = 'UPDATE reviewList
-                SET title = \'' . $gettitle . '\',
-                    content = \'' . $getcontent . '\',
-                    precontent = \'' . $precontent . '\',
-                    reg_date = \'' . $dateString . '\',
-                    ref = \'' . $getcategory . '\',
-                    mainimg = \'' . '/images/' . $_FILES['d_file']['name'] . '\'
-                WHERE listidx = \'' . $getidx . '\'';
+    if ($fileupload) {
+        $sql = 'UPDATE reviewList
+        SET title = \'' . $gettitle . '\',
+            content = \'' . $getcontent . '\',
+            precontent = \'' . $precontent . '\',
+            reg_date = \'' . $dateString . '\',
+            ref = \'' . $getcategory . '\',
+            mainimg = \'' . '/images/' . $_FILES['d_file']['name'] . '\'
+        WHERE listidx = \'' . $getidx . '\'';
+    } else {
+        $sql = 'UPDATE reviewList
+        SET title = \'' . $gettitle . '\',
+            content = \'' . $getcontent . '\',
+            precontent = \'' . $precontent . '\',
+            reg_date = \'' . $dateString . '\',
+            ref = \'' . $getcategory . '\'
+        WHERE listidx = \'' . $getidx . '\'';
+    }
 
     $result = mysqli_query($conn, $sql);
     if ($result) {

@@ -54,7 +54,7 @@ function newstoserver($list)
             sleep(1);
         } else {
             //sql 쿼리문 만들기
-            $sql = "INSERT INTO newsList (
+            $sql = "INSERT INTO reviewList (
             title,
             mainimg,
             reg_date,
@@ -71,7 +71,7 @@ function newstoserver($list)
                 '" . $precontent . "',
                 '" . $content . "'
             ) AS tmp
-            WHERE NOT EXISTS (SELECT * FROM newsList WHERE title = '" . $title . "') LIMIT 1";
+            WHERE NOT EXISTS (SELECT * FROM reviewList WHERE title = '" . $title . "') LIMIT 1";
             // 쿼리문 실행 및 결과 출력
             $result = mysqli_query($conn, $sql);
             if ($result) {
@@ -85,7 +85,7 @@ function newstoserver($list)
     }
 }
 
-$gethref = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=20190104');
+$gethref = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=20190107');
 $hreflist;
 preg_match_all("/https:\/\/news.naver.com\/main\/read.nhn\?[\w|&|=]*(\&oid=356)[\w|&|=]*/is", $gethref, $hreflist);
 

@@ -9,12 +9,12 @@ body {
     background-color: #24272E;
 }
 
-header {
+.row {
     background: white;
     padding: 20px;
 }
 
-header>h1 {
+.row>h1 {
     color: #24272E;
     text-align: center;
     font-family: 'Asap', sans-serif;

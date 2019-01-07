@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material 아이콘 사용하기 위한 용도 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <title>Rock Paper Scissors Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- 개인용 css 파일 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
+    <!-- html 각각 관리(navbar, footer 등) -->
+    <script src="/shareHTML/includeHTML.js"></script>
+    <script src="/js/materializecss.js"></script>
+</head>
+
+<body>
+    <header include-html="/shareHTML/nav.html"></header>
+    <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html"></ul>
+    <div class="row white">
+        <h1>Rock Paper Scissors</h1>
+    </div>
+
+    <div class="score-board">
+        <div id="user-label" class="badge">user</div>
+        <div id="computer-label" class="badge">comp</div>
+        <span id="user-score">0</span>:<span id="computer-score">0</span>
+    </div>
+
+    <div class="result">
+        <p>Paper covers rock. You win!</p>
+    </div>
+
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="images/rock.png" class="buttonimage" alt="">
+        </div>
+        <div class="choice" id="paper">
+            <img src="images/paper.png" class="buttonimage" alt="">
+        </div>
+        <div class="choice" id="scissors">
+            <img src="images/scissors.png" class="buttonimage" alt="">
+        </div>
+    </div>
+
+    <p id="action-message">Make your move</p>
+
+    <!-- HTML 공통 파일 포함 -->
+    <script>
+        includeHTML();
+    </script>
+
+    <script src="app.js" charset="utf-8"></script>
+
+</body>
+
+</html>
