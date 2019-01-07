@@ -21,7 +21,7 @@
             <?php 
             if(isset($_SESSION['user_id'])){
                 if($_SESSION['user_id'] == 'admin'){
-                    echo '<li><a href="/userinfo/sitesetting.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
+                    echo '<li><a href="/userinfo/sitemaster.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
                 } else {
                     echo '<li><a href="/userinfo/myinfo.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
                 } 
