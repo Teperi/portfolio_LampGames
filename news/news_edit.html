@@ -1,6 +1,11 @@
+<?php session_start();
+if($_SESSION['user_id'] != 'admin' || !isset($_SESSION['user_id'])){
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html>
-<?php session_start();?>
 
 <head>
     <meta charset="utf-8" />
@@ -16,9 +21,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/list.css" />
+    <!-- 개인용 css 파일 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/news/news.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
     <script src="/js/materializecss.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -33,12 +41,10 @@
             <blockquote class="dohyeon-font">
                 <h3>뉴스 수정</h3>
             </blockquote>
-            <div class="row" id="newslist">
-                <div class="col s12" id="newsList">
-
-                </div>
-
+            <div id="editnews">
+                <?php include $_SERVER["DOCUMENT_ROOT"].'/php/DBtoView/editNewsview.php';?>
             </div>
+
         </div>
 
         <script>
@@ -49,6 +55,69 @@
         <!-- HTML 공통 파일 포함 -->
         <script>
             includeHTML();
+        </script>
+
+
+        <script>
+            let titletext = document.getElementById("title");
+            let contenttext = document.getElementById("content");
+            let Image = document.getElementById("uploadImage");
+            let backbutton = document.getElementById("historyback");
+            let submitbutton = document.getElementById("submit")
+
+            submitbutton.addEventListener('click', function() {
+
+            });
+
+            function sendcountnum(number, callback) {
+                var data = 'morecount=' + number;
+                var xhr = new XMLHttpRequest();
+                var url = "/php/DBtoView/newsList.php";
+                xhr.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        callback(this);
+                    }
+                }
+                xhr.open('POST', url);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+                xhr.send(data);
+            }
+
+            function resultout(xhttp) {
+                if (xhttp.responseText.length != 4) {
+                    document.getElementById('newsList').innerHTML += xhttp.responseText;
+                    document.getElementById('more').classList.remove('disabled');
+                    // TODO: 마지막 리스트 출력 이후 더보기 disabled 기능 출력
+                }
+            }
+        </script>
+
+        <script>
+            var sel_file;
+
+            $(document).ready(function() {
+                $("#uploadImage").on("change", handleImgFileSelect);
+            });
+
+            function handleImgFileSelect(e) {
+                var files = e.target.files;
+                var filesArr = Array.prototype.slice.call(files);
+
+                filesArr.forEach(function(f) {
+                    if (!f.type.match("image.*")) {
+                        alert("확장자는 이미지 확장자만 가능합니다.");
+                        return;
+                    }
+
+                    sel_file = f;
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $("#img").attr("src", e.target.result);
+                    }
+                    reader.readAsDataURL(f);
+                });
+            }
         </script>
 
     </main>

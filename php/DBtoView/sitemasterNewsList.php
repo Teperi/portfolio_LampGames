@@ -33,6 +33,7 @@ if (mysqli_num_rows($result_sql) > 0) {
 
                 <a href="/news/news_content.html?listidx=' . $row['listidx'] . '" class="waves-effect waves-light btn-small">글 본문 보기</a>
                 <a href="/news/news_content.html?listidx=' . $row['listidx'] . '#reply" class="waves-effect waves-light btn-small">댓글 확인</a>
+                <a href="/news/news_edit.html?listidx=' . $row['listidx'] . '" class="waves-effect waves-light btn-small">글 수정</a>
                 <button class="waves-effect waves-light btn-small" onClick="clickdelete(' . $row['listidx'] . ', \'' . $text . '\')">글 삭제</button>
                 <label class="secondary-content">
                     <input type="checkbox" id="' . $row['listidx'] . '" name="checkbox" class="checkbox"/>
