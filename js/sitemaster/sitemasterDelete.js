@@ -29,5 +29,5 @@ function sendDelete(number, callback) {
 
 function callbackDelete(xhttp) {
     console.log(xhttp.responseText);
-    // location.reload();
+    location.reload();
 }
