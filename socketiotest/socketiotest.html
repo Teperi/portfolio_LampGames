@@ -59,6 +59,25 @@
     <form action="">
         <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+    <!-- That’s all it takes to load the socket.io-client, which exposes a io global, and then connect. -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function() {
+            var socket = io();
+            $('form').submit(function(e) {
+                e.preventDefault(); // prevents page reloading
+                // m에 들어간 값을 chat message 로 넘겨줌
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            // 뿌려져 받은 메시지를 내 화면에 출력
+            socket.on('chat message', function(msg) {
+                $('#messages').append($('<li>').text(msg));
+            });
+        });
+    </script>
 </body>
 
 </html>
