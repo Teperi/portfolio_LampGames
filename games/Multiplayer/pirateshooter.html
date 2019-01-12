@@ -10,12 +10,12 @@
 
 <body>
     <script type="text/javascript">
-        var config = {
+        let config = {
             // 오토로 캔버스 만들어줌
             type: Phaser.AUTO,
             // 위 아래 크기 조정
-            width: 750,
-            height: 500,
+            width: 800,
+            height: 600,
 
             physics: {
                 default: 'arcade',
@@ -33,12 +33,13 @@
             }
         };
 
-        var game = new Phaser.Game(config);
+        let game = new Phaser.Game(config);
 
-        var player;
+        let player;
         //이동 관련
-        var cursors;
-        var wasd;
+        let cursors;
+        // 공격 관련
+        let bullet;
 
         function preload() {
             this.load.image('water', 'assets/water_tile.png');
@@ -47,7 +48,6 @@
         }
 
         function create() {
-            //배경 이미지
             this.add.tileSprite(0, 0, config.width, config.height, 'water').setOrigin(0, 0);
 
             // 플레이어 생성(맵 가운데)
@@ -66,6 +66,19 @@
                 'right2': Phaser.Input.Keyboard.KeyCodes.D,
                 'space': Phaser.Input.Keyboard.KeyCodes.SPACE,
                 'shift': Phaser.Input.Keyboard.KeyCodes.SHIFT
+            });
+
+            bullets = this.physics.add.group();
+
+            // 맵 모든 영역을 클릭하면 반응하도록 해주는 함수
+            this.input.on('pointerdown', function() {
+                let bullet = bullets.create(player.x, player.y, 'bullet');
+                // 맵 바깥으로 나가도록
+                bullet.setCollideWorldBounds(false);
+                // 
+                bullet.rotation = (Phaser.Math.Angle.Between(player.x, player.y, this.input.mousePointer.x, this.input.mousePointer.y) - 1.5);
+                bullet.setVelocity(player.x, player.y);
+
             });
         }
 
@@ -98,4 +111,4 @@
 
 </body>
 
-</html>ㅇ
+</html>
