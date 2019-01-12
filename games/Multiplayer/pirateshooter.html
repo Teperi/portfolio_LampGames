@@ -20,7 +20,9 @@
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: false
+                    gravity: {
+                        y: 0
+                    }
                 }
             },
             // 사용하는 신 지정
@@ -34,7 +36,9 @@
         var game = new Phaser.Game(config);
 
         var player;
+        //이동 관련
         var cursors;
+        var wasd;
 
         function preload() {
             this.load.image('water', 'assets/water_tile.png');
@@ -43,33 +47,55 @@
         }
 
         function create() {
-            // // 배경 이미지 
-            // for (let i = 0; i < ((750 / 64) + 1); i++) {
-            //     for (let j = 0; j < ((500 / 64) + 1); j++) {
-            //         this.add.sprite(i * 64, j * 64, 'water');
-            //     }
-            // }
+            //배경 이미지
+            this.add.tileSprite(0, 0, config.width, config.height, 'water').setOrigin(0, 0);
 
-            this.add.tileSprite(0, 0, 750, 500, 'water');
-
-            player = this.physics.add.sprite(0, 0, 'ship');
+            // 플레이어 생성(맵 가운데)
+            player = this.physics.add.sprite(config.width / 2, config.height / 2, 'ship');
             player.setCollideWorldBounds(true);
 
-            cursors = this.input.keyboard.createCursorKeys();
+            // 화살표와 wasd 모두 사용할 수 있도록 설정
+            cursors = this.input.keyboard.addKeys({
+                'up1': Phaser.Input.Keyboard.KeyCodes.UP,
+                'up2': Phaser.Input.Keyboard.KeyCodes.W,
+                'down1': Phaser.Input.Keyboard.KeyCodes.DOWN,
+                'down2': Phaser.Input.Keyboard.KeyCodes.S,
+                'left1': Phaser.Input.Keyboard.KeyCodes.LEFT,
+                'left2': Phaser.Input.Keyboard.KeyCodes.A,
+                'right1': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+                'right2': Phaser.Input.Keyboard.KeyCodes.D,
+                'space': Phaser.Input.Keyboard.KeyCodes.SPACE,
+                'shift': Phaser.Input.Keyboard.KeyCodes.SHIFT
+            });
         }
 
 
         function update() {
-            if (cursors.left.isDown || cursors.a.isDown) {
-                player.setVelocityX(-160);
-            } else if (cursors.right.isDown) {
-                player.setVelocityX(160);
+            // 좌우 컨트롤
+            if (cursors.left1.isDown || cursors.left2.isDown) {
+                player.setVelocityX(-300);
+            } else if (cursors.right1.isDown || cursors.right2.isDown) {
+                player.setVelocityX(300);
             } else {
                 player.setVelocityX(0);
             }
+
+            // 상하 컨트롤
+            if (cursors.up1.isDown || cursors.up2.isDown) {
+                player.setVelocityY(-300);
+            } else if (cursors.down1.isDown || cursors.down2.isDown) {
+                player.setVelocityY(300);
+            } else {
+                player.setVelocityY(0);
+            }
+
+            // 유저의 뱃머리를 마우스 커서 위치로 항상 돌아가도록 설정
+            player.rotation = (Phaser.Math.Angle.Between(player.x, player.y, this.input.mousePointer.x, this.input.mousePointer.y) - 1.5);
+
+
         }
     </script>
 
 </body>
 
-</html>
+</html>ㅇ
