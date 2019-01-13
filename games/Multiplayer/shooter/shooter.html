@@ -6,11 +6,65 @@
     <!-- Load the Phaser game library -->
     <script src="//cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser.js"></script>
 
+
 </head>
 
 <body>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
+        class HealthBar {
+
+            constructor(scene, x, y) {
+                this.bar = new Phaser.GameObjects.Graphics(scene);
+
+                this.x = x;
+                this.y = y;
+                this.value = 100;
+                this.p = 50 / 100;
+
+                this.draw();
+
+                scene.add.existing(this.bar);
+            }
+
+            decrease(amount) {
+                this.value -= amount;
+
+                if (this.value < 0) {
+                    this.value = 0;
+                }
+
+                this.draw();
+
+                return (this.value === 0);
+            }
+
+            draw() {
+                this.bar.clear();
+
+                //  BG
+                this.bar.fillStyle(0x000000);
+                this.bar.fillRect(this.x, this.y, 54, 12);
+
+                //  Health
+
+                this.bar.fillStyle(0xffffff);
+                this.bar.fillRect(this.x + 2, this.y + 2, 50, 8);
+
+                if (this.value < 30) {
+                    this.bar.fillStyle(0xff0000);
+                } else {
+                    this.bar.fillStyle(0x00ff00);
+                }
+
+                var d = Math.floor(this.p * this.value);
+
+                this.bar.fillRect(this.x + 2, this.y + 2, d, 8);
+            }
+
+        }
+
+
         let config = {
             // 오토로 캔버스 만들어줌
             type: Phaser.AUTO,
@@ -40,17 +94,16 @@
         //이동 관련
         let cursors;
         // 공격 관련
-        let bullet;
-
+        let bullets;
+        let bullet_array = [];
         // 현재 상태 모두 저장하는 변수
         let self;
-
 
         function preload() {
             this.load.image('tile', 'assets/tile.png');
             this.load.image('bullet', 'assets/bullet.png');
             this.load.image('tank', 'assets/tank.png');
-            this.load.image('otherPlayer', 'assets/tank_red.png');
+            this.load.image('otherPlayer', 'assets/tank_dark.png');
         }
 
         function create() {
@@ -70,41 +123,27 @@
                 'shift': Phaser.Input.Keyboard.KeyCodes.SHIFT
             });
 
-            bullets = this.physics.add.group();
 
             // 플레이어 생성(맵 가운데)
             player = this.physics.add.sprite(Math.random() * config.width, Math.random() * config.height, 'tank').setDisplaySize(42, 46);
             player.setCollideWorldBounds(true);
+            player.hp = new HealthBar(this, player.x - 27, player.y - 40);
+
 
             // 소켓을 설정함
             this.socket = io();
-
-
-            // 맵 모든 영역을 클릭하면 반응하도록 해주는 함수
-            this.input.on('pointerdown', function() {
-                // 방향 및 속도 계산 함수
-                var start_x = Math.cos(player.rotation + Math.PI / 2) * 30;
-                var start_y = Math.sin(player.rotation + Math.PI / 2) * 30;
-
-                // 방향 및 속도 계산 함수
-                var speed_x = Math.cos(player.rotation + Math.PI / 2) * 300;
-                var speed_y = Math.sin(player.rotation + Math.PI / 2) * 300;
-                // bullet 만들어서 발사함
-                let bullet = bullets.create(player.x + start_x, player.y + start_y, 'bullet');
-                bullet.setCollideWorldBounds(false);
-                bullet.setVelocity(speed_x, speed_y);
-
-                // 내일은 총알부터
-                //https://code.tutsplus.com/tutorials/create-a-multiplayer-pirate-shooter-game-in-your-browser--cms-23311
-                // 4.Syncing Bullets 부터 시작하면 됨
-            });
 
             // 내가 접속해서 만들어지는 정보 보내기
             this.socket.emit('new-player', {
                 x: player.x,
                 y: player.y,
+                hpbar_x: player.hp.x,
+                hpbar_y: player.hp.y,
+                hpbar_hp: player.hp.value,
                 rotation: player.rotation
             });
+
+
 
             // 현재 상태에 다른 플레이어를 담을 수 있는 그룹 만들기 
             this.otherPlayers = this.physics.add.group();
@@ -129,6 +168,7 @@
             this.socket.on('disconnect', function(playerId) {
                 self.otherPlayers.getChildren().forEach(function(otherPlayer) {
                     if (playerId === otherPlayer.playerId) {
+                        otherPlayer.hp.bar.clear();
                         otherPlayer.destroy();
                     }
                 });
@@ -139,10 +179,72 @@
                     if (playerInfo.playerId === otherPlayer.playerId) {
                         otherPlayer.setRotation(playerInfo.rotation);
                         otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+                        otherPlayer.hp.value = playerInfo.hpbar_hp;
+                        otherPlayer.hp.x = playerInfo.hpbar_x;
+                        otherPlayer.hp.y = playerInfo.hpbar_y;
+                        otherPlayer.hp.draw();
                     }
                 });
             });
 
+            // Listen for any player hit events and make that player flash 
+            this.socket.on('playerHit', function(id) {
+                if (id == self.socket.id) {
+                    //If this is you
+                    player.alpha = 0;
+                } else {
+                    // Find the right player 
+                    self.otherPlayers.getChildren()[findOtherPlayerIndex(self.otherPlayers.getChildren(), id)].alpha = 0;
+                }
+            })
+
+            // 맵 모든 영역을 클릭하면 반응하도록 해주는 함수
+            this.input.on('pointerdown', function() {
+                // 서버와 통신할 경우에 위치 등의 정보는 서버에서 계산해야 한다.
+                // 클라이언트에서 계산할 경우 해킹으로 인해 오류가 날 수 있다.
+
+                // 위치 확인
+                var bullet_x = Math.cos(player.rotation + Math.PI / 2);
+                var bullet_y = Math.sin(player.rotation + Math.PI / 2);
+
+                // 소켓으로 정보 보내기
+                self.socket.emit('shootBullet', {
+                    x: player.x + (bullet_x * 30),
+                    y: player.y + (bullet_y * 30),
+                    speed_x: bullet_x * 10,
+                    speed_y: bullet_y * 10
+                });
+
+                // // 과거 1인용 게임 전용으로 만들 경우
+                // // 총알 첫 위치 계산 함수
+                // var start_x = Math.cos(player.rotation + Math.PI / 2) * 30;
+                // var start_y = Math.sin(player.rotation + Math.PI / 2) * 30;
+
+                // // 방향 및 속도 계산 함수
+                // var speed_x = Math.cos(player.rotation + Math.PI / 2) * 300;
+                // var speed_y = Math.sin(player.rotation + Math.PI / 2) * 300;
+                // // bullet 만들어서 발사함
+                // let bullet = bullets.create(player.x + start_x, player.y + start_y, 'bullet');
+                // bullet.setCollideWorldBounds(false);
+                // bullet.setVelocity(speed_x, speed_y);
+            });
+
+            this.socket.on('bulletsUpdate', function(server_bullet_array) {
+                for (let i = 0; i < server_bullet_array.length; i++) {
+                    if (bullet_array[i] == undefined) {
+                        bullet_array[i] = self.physics.add.sprite(server_bullet_array[i].x, server_bullet_array[i].y, 'bullet');
+                    } else {
+                        bullet_array[i].x = server_bullet_array[i].x;
+                        bullet_array[i].y = server_bullet_array[i].y;
+                    }
+                }
+                // Otherwise if there's too many, delete the extra 
+                for (var i = server_bullet_array.length; i < bullet_array.length; i++) {
+                    bullet_array[i].destroy();
+                    bullet_array.splice(i, 1);
+                    i--;
+                }
+            });
         }
 
         // 다른 사람들 정보 저장하는 함수
@@ -151,17 +253,41 @@
             const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setDisplaySize(42, 46);
             // id 는 소켓 id 저장
             otherPlayer.playerId = playerInfo.playerId;
+            otherPlayer.hp = new HealthBar(self, playerInfo.hpbar_x, playerInfo.hpbar_y);
+            otherPlayer.hp.value = playerInfo.hpbar_hp;
             // 추가하기
             self.otherPlayers.add(otherPlayer);
         }
 
-
         function update() {
+            // To make player flash when they are hit, set player.spite.alpha = 0
+            if (player.alpha < 1) {
+                player.alpha += (1 - player.alpha) * 0.16;
+            } else {
+                player.alpha = 1;
+            }
+
+            // To make player flash when they are hit, set player.spite.alpha = 0
+            for (let i = 0; i < self.otherPlayers.getChildren().length; i++) {
+                if (self.otherPlayers.getChildren()[i].alpha < 1) {
+                    self.otherPlayers.getChildren()[i].alpha += (1 - self.otherPlayers.getChildren()[i].alpha) * 0.16;
+                } else {
+                    self.otherPlayers.getChildren()[i].alpha = 1;
+                }
+            }
+
+
             // 좌우 컨트롤
+            // player 의 경우 setVelocity로 이동
+            // hp bar 의 경우 player의 좌표를 기준으로 좌표를 변경하고 다시 그려줌
             if (cursors.left1.isDown || cursors.left2.isDown) {
                 player.setVelocityX(-150);
+                player.hp.x = (player.x - 27);
+                player.hp.draw();
             } else if (cursors.right1.isDown || cursors.right2.isDown) {
                 player.setVelocityX(150);
+                player.hp.x = (player.x - 27);
+                player.hp.draw();
             } else {
                 player.setVelocityX(0);
             }
@@ -169,13 +295,17 @@
             // 상하 컨트롤
             if (cursors.up1.isDown || cursors.up2.isDown) {
                 player.setVelocityY(-150);
+                player.hp.y = (player.y - 40);
+                player.hp.draw();
             } else if (cursors.down1.isDown || cursors.down2.isDown) {
                 player.setVelocityY(150);
+                player.hp.y = (player.y - 40);
+                player.hp.draw();
             } else {
                 player.setVelocityY(0);
             }
 
-            // 유저의 뱃머리를 마우스 커서 위치로 항상 돌아가도록 설정
+            // 플레이어의 방향을 마우스 커서 위치로 항상 돌아가도록 설정
             player.rotation = (Phaser.Math.Angle.Between(player.x, player.y, this.input.mousePointer.x, this.input.mousePointer.y) - 1.6);
 
             // emit player movement
@@ -186,6 +316,9 @@
                 this.socket.emit('playerMovement', {
                     x: player.x,
                     y: player.y,
+                    hpbar_x: player.hp.x,
+                    hpbar_y: player.hp.y,
+                    hpbar_hp: player.hp.value,
                     rotation: player.rotation
                 });
             }
@@ -196,6 +329,16 @@
                 y: player.y,
                 rotation: player.rotation
             };
+        }
+
+
+        function findOtherPlayerIndex(array, id) {
+            for (let i = 0; i < array.length; i++) {
+                if (array[i]['playerId'] == id) {
+                    return i;
+                }
+            }
+            return -1;
         }
     </script>
 
