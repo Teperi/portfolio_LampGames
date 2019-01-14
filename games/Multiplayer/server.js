@@ -28,7 +28,8 @@ io.on('connection', function(socket) {
             hpbar_x: state_data.hpbar_x,
             hpbar_y: state_data.hpbar_y,
             hpbar_hp: state_data.value,
-            playerId: socket.id
+            playerId: socket.id,
+            nickname: state_data.nickname
         };
         // 현재 플레이어를 currentPlayers 에 저장
         socket.emit('currentPlayers', players);
@@ -53,6 +54,7 @@ io.on('connection', function(socket) {
         players[socket.id].hpbar_y = movementData.hpbar_y;
         players[socket.id].hpbar_hp = movementData.hpbar_hp;
         players[socket.id].rotation = movementData.rotation;
+        players[socket.id].nickname = movementData.nickname;
         // emit a message to all players about the player that moved
         socket.broadcast.emit('playerMoved', players[socket.id]);
     });
@@ -66,7 +68,7 @@ io.on('connection', function(socket) {
 });
 
 // Listen on port 5000
-app.set('port', (process.env.PORT || 5000));
+app.set('port', (process.env.PORT || 3000));
 http.listen(app.get('port'), function() {
     console.log('listening on port', app.get('port'));
 });
@@ -85,7 +87,7 @@ function ServerGameLoop() {
                 var dx = players[id].x - bullet.x;
                 var dy = players[id].y - bullet.y;
                 var dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 70) {
+                if (dist < 40) {
                     io.emit('playerHit', id); // Tell everyone this player got hit
                 }
             }
