@@ -67,9 +67,9 @@ var Preloader = new Phaser.Class({
     },
 
     preload: function() {
-        this.load.image('tile', 'assets/tile.png');
+        this.load.image('tile', 'assets/tileSand2.png');
         this.load.image('bullet', 'assets/bullet.png');
-        this.load.image('tank', 'assets/tank.png');
+        this.load.image('tank', 'assets/tank_blue.png');
         this.load.image('otherPlayer', 'assets/tank_dark.png');
         this.load.image('button', 'assets/playbutton.png');
     },
@@ -112,7 +112,7 @@ var StartPage = new Phaser.Class({
             nickname = this.add.text(200, 200, nickname._text, { font: '48px Courier', fill: '#ffffff' });
         }
 
-
+        var self = this;
 
         $(document).bind("keydown", function(e) {
             if (e.keyCode == 8) { // backspace
@@ -122,12 +122,12 @@ var StartPage = new Phaser.Class({
                 if (nowscene == 'StartPage') {
                     nickname.destroy();
                     nickname._text = nickname._text.substr(0, nickname._text.length - 1)
-                    nickname = this.add.text(200, 200, nickname._text, { font: '48px Courier', fill: '#ffffff' });
+                    nickname = self.add.text(200, 200, nickname._text, { font: '48px Courier', fill: '#ffffff' });
                 }
 
             } else if (nowscene == 'StartPage' && e.keyCode >= 48 && e.keyCode <= 105) {
                 nickname.destroy();
-                nickname = this.add.text(200, 200, nickname._text += e.key, { font: '48px Courier', fill: '#ffffff' });
+                nickname = self.add.text(200, 200, nickname._text + e.key, { font: '48px Courier', fill: '#ffffff' });
             }
         });
 
