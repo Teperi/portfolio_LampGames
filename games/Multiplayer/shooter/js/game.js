@@ -107,7 +107,7 @@ var StartPage = new Phaser.Class({
         this.add.text(100, 100, 'What\'s your name?', { font: '48px Courier', fill: '#ffffff' });
         this.add.text(100, 160, 'Just typing', { font: '15px Courier', fill: '#ffffff' });
         if (nickname == undefined) {
-            nickname = this.add.text(200, 200, '', { font: '48px Courier', fill: '#ffffff' });
+            nickname = this.add.text(200, 200, 'Anonymous', { font: '48px Courier', fill: '#ffffff' });
         } else {
             nickname = this.add.text(200, 200, nickname._text, { font: '48px Courier', fill: '#ffffff' });
         }
@@ -247,7 +247,7 @@ var Game = new Phaser.Class({
                     otherPlayer.hp.y = playerInfo.hpbar_y;
                     otherPlayer.hp.draw();
                     otherPlayer.nickname.destroy();
-                    othetPlayer.nickname = self.add.text(playerInfo.hpbar_x, playerInfo.hpbar_y - 20, playerInfo.nickname, { fill: '#000000' });
+                    otherPlayer.nickname = self.add.text(playerInfo.x - 27, playerInfo.y - 60, playerInfo.nickname, { fill: '#000000' });
                 }
             });
         });
@@ -316,12 +316,12 @@ var Game = new Phaser.Class({
         // 다른 사람들 정보 저장하는 함수
         function addOtherPlayers(self, playerInfo) {
             // 다른 사람들의 x/y 좌표를 가져와서 다른 색깔로 만들기
-            const otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setDisplaySize(42, 46).setSize(42, 46);
+            var otherPlayer = self.add.sprite(playerInfo.x, playerInfo.y, 'otherPlayer').setDisplaySize(42, 46).setSize(42, 46);
             // id 는 소켓 id 저장
             otherPlayer.playerId = playerInfo.playerId;
             otherPlayer.hp = new HealthBar(self, playerInfo.hpbar_x, playerInfo.hpbar_y);
             otherPlayer.hp.value = playerInfo.hpbar_hp;
-            othetPlayer.nickname = self.add.text(playerInfo.hpbar_x, playerInfo.hpbar_y - 20, playerInfo.nickname, { fill: '#000000' });
+            otherPlayer.nickname = self.add.text(playerInfo.x - 27, playerInfo.y - 60, playerInfo.nickname, { fill: '#000000' });
             // 추가하기
             self.otherPlayers.add(otherPlayer);
         }
@@ -334,8 +334,6 @@ var Game = new Phaser.Class({
             }
             return -1;
         }
-
-
 
     },
 
@@ -402,12 +400,12 @@ var Game = new Phaser.Class({
         var r = player.rotation;
         if (player.oldPosition && (x !== player.oldPosition.x || y !== player.oldPosition.y || r !== player.oldPosition.rotation)) {
             this.socket.emit('playerMovement', {
-                x: player.x,
-                y: player.y,
+                x: x,
+                y: y,
                 hpbar_x: player.hp.x,
                 hpbar_y: player.hp.y,
                 hpbar_hp: player.hp.value,
-                rotation: player.rotation,
+                rotation: r,
                 nickname: player.nickname._text
             });
         }
@@ -471,10 +469,11 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: [Preloader, StartPage, Game, GameOver]
 };
 
 var game = new Phaser.Game(config);
+s
