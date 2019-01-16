@@ -1,0 +1,24 @@
+{
+  "name": "linuxshare",
+  "version": "1.0.0",
+  "description": "teamnova basic php",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Teperi/teamnova_php_htdocs.git"
+  },
+  "author": "Teperi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Teperi/teamnova_php_htdocs/issues"
+  },
+  "homepage": "https://gitlab.com/Teperi/teamnova_php_htdocs#readme",
+  "devDependencies": {
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  }
+}
