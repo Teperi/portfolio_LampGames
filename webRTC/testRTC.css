@@ -1,0 +1,7 @@
+video {
+    /* 이렇게 될 경우 출력 필터가 설정됨 */
+    /* filter: blur(4px) invert(1) opacity(0.5); */
+    /* filter: hue-rotate(180deg) saturate(200%); */
+    max-width: 100%;
+    width: 320px;
+}
