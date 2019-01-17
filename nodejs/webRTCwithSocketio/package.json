@@ -1,5 +1,5 @@
 {
-    "name": "Wcam Live",
+    "name": "wcamlivetest",
     "version": "0.0.1",
     "dependencies": {
         "socket.io": "*",
