@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>play</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <video style="width:680px;height:320px;" autoplay playsinline></video>
+    <canvas id="preview"></canvas>
+    <div id="logger"></div>
+
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script>
+        var socket = io();
+        var canvas = document.getElementById("preview");
+        var context = canvas.getContext("2d");
+
+        canvas.width = 800;
+        canvas.height = 600;
+
+        context.width = canvas.width;
+        context.height = canvas.height;
+
+        // On this codelab, you will be streaming only video (video: true).
+        const mediaStreamConstraints = {
+            video: true,
+        };
+
+        // Video element where stream will be placed.
+        const localVideo = document.querySelector('video');
+
+        // Local stream that will be reproduced on the video.
+        let localStream;
+
+        // Handles success by adding the MediaStream to the video element.
+        function gotLocalMediaStream(mediaStream) {
+            localStream = mediaStream;
+            localVideo.srcObject = mediaStream;
+            logger('Camera connet [OK]');
+        }
+
+        // Handles error by logging a message to the console with the error message.
+        function handleLocalMediaStreamError(error) {
+            console.log('navigator.getUserMedia error: ', error);
+            logger('Camera no connect');
+        }
+
+        $(function() {
+            // Initializes media stream.
+            navigator.mediaDevices.getUserMedia(mediaStreamConstraints)
+                .then(gotLocalMediaStream).catch(handleLocalMediaStreamError);
+
+            setInterval(function() {
+                viewVideo(localVideo, context);
+            }, 16);
+
+        });
+
+        function logger(msg) {
+            $("#logger").text(msg);
+        }
+
+        function viewVideo(localVideo, context) {
+            context.drawImage(localVideo, 0, 0, context.width, context.height);
+            socket.emit('stream', canvas.toDataURL('image/jpge'));
+        }
+    </script>
+</body>
+
+</html>
