@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<?php session_start();?>
+<?php session_start();
+?>
 
 <head>
     <meta charset="utf-8" />
@@ -30,6 +31,8 @@
         <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html"></ul>
 
         <div class="container">
+
+
 
             <blockquote class="dohyeon-font">
                 <h1>Play Games</h1>
@@ -88,6 +91,17 @@
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <blockquote class="dohyeon-font">
+                <h1>Streaming</h1>
+            </blockquote>
+            <div class="row">
+                <form action="//localhost:8080/streaming_lobby" method="post">
+                    <input name="user_id" type="hidden" value=<?php echo $_SESSION[ "user_id"]?>>
+                    <input name="nickName" type="hidden" value=<?php echo $_SESSION[ "nickName"]?>>
+                    <button type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">더보기</button>
+                </form>
             </div>
 
             <blockquote class="dohyeon-font">

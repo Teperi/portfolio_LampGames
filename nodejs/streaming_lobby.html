@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material 아이콘 사용하기 위한 용도 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lamp Games - news & Play Games!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 개인용 css 파일 -->
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> -->
+    <!-- html 각각 관리(navbar, footer 등) -->
+    <script src="./shareHTML/includeHTML.js"></script>
+    <script src="./js/materializecss.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <header include-html="shareHTML/nav.html">
+
+    </header>
+    <main>
+
+        <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.html"></ul>
+
+
+
+        <footer include-html="shareHTML/footer.html"> </footer>
+
+        <!-- HTML 공통 파일 포함 -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                includeHTML();
+                var socket = io();
+                socket.on('session_info', (data) => {
+                    console.log(data);
+                    console.log(data.nickName);
+                })
+            });
+        </script>
+
+    </main>
+</body>
+
+</html>
