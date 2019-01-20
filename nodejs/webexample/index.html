@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Realtime communication</title>
+</head>
+
+<body>
+    <h1>Realtime communication</h1>
+
+    <video id="localVideo" autoplay></video>
+    <video id="remoteVideo" autoplay></video>
+
+    <div>
+        <input id="roomName" placeholder="room name" />
+        <button id="startButton">Start</button>
+        <button id="callButton">Call</button>
+        <button id="hangupButton">Hang Up</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script>
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+
+        const roomName = document.getElementById('roomName');
+
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', initRTC, false);
+
+        const callButton = document.getElementById('callButton');
+        callButton.addEventListener('click', startCall, false);
+
+        const hangupButton = document.getElementById('hangupButton');
+        hangupButton.addEventListener('click', hangupCall, false);
+        const socket = io();
+        let localStream;
+        let peerConnection;
+
+        // 연결 준비
+        function initRTC() {
+            // 내 영상 실행해서 나에게 보여주는 부분
+            // TODO: 추후 canvas 화면 같이 넣기
+            navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: 640,
+                        height: 480
+                    },
+                    audio: true,
+                })
+                .then(mediaStream => {
+                    localVideo.srcObject = mediaStream;
+                    localVideo.volume = 0;
+                    localStream = mediaStream;
+                });
+            // 내가 적은 방 이름에 접속
+            socket.emit('join', roomName.value, (err) => {
+                console.log('join 완료');
+                if (err) alert(err);
+                // 에러가 없을 경우
+                else {
+                    // 응답 받기?
+                    socket.on('offer', (offer) => {
+                        console.log(offer);
+                        createAnswer(offer);
+                    });
+                    // ICE 받기?
+                    socket.on('candidate', (candidate) => {
+                        if (peerConnection) {
+                            peerConnection.addIceCandidate(candidate);
+                            console.log("candidate");
+                        }
+                    });
+                    socket.on('answer', onAnswer);
+                }
+            });
+
+            console.log("여기는?")
+        };
+
+        function startCall() {
+            const iceServers = [{
+                'urls': 'stun:stun.l.google.com:19302'
+            }];
+            peerConnection = new RTCPeerConnection({
+                iceServers: iceServers
+            });
+            peerConnection.addEventListener('icecandidate', handleConnection);
+            peerConnection.addEventListener('addstream', gotRemoteMediaStream);
+            peerConnection.addStream(localStream);
+            createOffer();
+        }
+
+        function hangupCall() {
+            if (peerConnection) {
+                peerConnection.close()
+                peerConnection = null
+            }
+        };
+
+        function onAnswer(answer) {
+            peerConnection.setRemoteDescription(answer)
+                .catch(e => console.log(e));
+        };
+
+        function createOffer() {
+            peerConnection.createOffer()
+                .then(offer => {
+                    peerConnection.setLocalDescription(offer.sdf)
+                    return offer
+                })
+                .then(offer => socket.emit('offer', {
+                    room: roomName.value,
+                    offer
+                }));
+        };
+
+        function createAnswer(description) {
+            peerConnection.setRemoteDescription(description)
+                .then(() => peerConnection.createAnswer())
+                .then((answer) => {
+                    peerConnection.setLocalDescription(answer)
+                    return answer;
+                })
+                .then((answer) => socket.emit('answer', {
+                    room: roomName,
+                    answer
+                }))
+                .catch(e => console.log(e));
+        };
+
+        function gotRemoteMediaStream(event) {
+            const mediaStream = event.stream;
+            remoteVideo.srcObject = mediaStream;
+            remoteStream = mediaStream;
+        };
+
+        function handleConnection(event) {
+            const iceCandidate = event.candidate;
+            socket.emit('candidate', {
+                room: roomName,
+                candidate: iceCandidate
+            });
+        };
+    </script>
+</body>
+
+</html>

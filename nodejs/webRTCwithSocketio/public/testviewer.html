@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>play</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <!-- 방송하는 화면과 리모트 받는 화면 2개 만들기 -->
+    <video id="remoteVideo" autoplay></video>
+
+    <!-- 방송 시작 및 종료 버튼 생성 -->
+    <div>
+        <button id="call">Call</button>
+        <button id="hangUp">Hang Up</button>
+    </div>
+
+
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            const callee = new RTCPeerConnection();
+
+            const callBtn = document.getElementById('call');
+            const hangUpBtn = document.getElementById('hangUp');
+
+            const localVideo = document.getElementById('localVideo');
+            const remoteVideo = document.getElementById('remoteVideo');
+
+            callBtn.addEventListener('click', join);
+            hangUpBtn.addEventListener('click', handlerClickHangUp);
+
+
+            function join() {
+                socket.emit('join');
+
+                socket.on('broadcaster', (sdp) => {
+                    callee.setRemoteDescription(sdp);
+                    callee.createAnswer()
+                        .then(sdp => createAnswerSuccess(sdp))
+                        .catch(e => createAnswerError(e));
+                });
+
+            }
+
+            callee.onicecandidate = handlerCalleeOnicecandidate;
+            callee.onaddstream = handlerCalleeAddStream;
+
+            function handlerCalleeOnicecandidate(e) {
+                if (e.candidate) callee.addIceCandidate(e.candidate);
+            }
+
+            function handlerCalleeAddStream(e) {
+                remoteVideo.srcObject = e.stream;
+            }
+
+            function sendOffer(sdp) {
+                callee.setRemoteDescription(sdp);
+                callee.createAnswer()
+                    .then(sdp => createAnswerSuccess(sdp))
+                    .catch(e => createAnswerError(e));
+            }
+
+            function createAnswerSuccess(sdp) {
+                callee.setLocalDescription(sdp);
+                sendAnswer(sdp);
+            }
+
+            function sendAnswer(sdp) {
+                socket.emit('remote', (sdp));
+            }
+
+            function handlerClickHangUp() {
+                remoteVideo.srcObject = null;
+            }
+
+            function createAnswerError(e) {
+                console.log(e);
+            }
+
+            function createOfferError(e) {
+                console.log(e);
+            }
+
+            function getUserMediaError(e) {
+                console.log(e);
+            }
+        });
+    </script>
+</body>
+
+</html>
