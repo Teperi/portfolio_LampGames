@@ -133,7 +133,8 @@ var RTCMultiConnection = function(roomid, forceOptions) {
         parameters += '&sessionid=' + connection.sessionid;
         parameters += '&msgEvent=' + connection.socketMessageEvent;
         parameters += '&socketCustomEvent=' + connection.socketCustomEvent;
-        parameters += '&autoCloseEntireSession=' + !!connection.autoCloseEntireSession;
+        parameters += '&autoCloseEntireSession=' + !connection.autoCloseEntireSession;
+        parameters += '&streamtitle=' + connection.streamtitle;
 
         if (connection.session.broadcast === true) {
             parameters += '&oneToMany=true';

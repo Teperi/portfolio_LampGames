@@ -4,62 +4,106 @@
 <html lang="en" dir="ltr">
 
 <head>
-    <meta charset="utf-8">
-    <title>Video OneWay Broadcasting using RTCMultiConnection</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <link rel="shortcut icon" href="/demos/logo.png">
-    <link rel="stylesheet" href="/demos/stylesheet.css">
-    <script src="/demos/menu.js"></script>
-</head>
+    <meta charset="utf-8" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material 아이콘 사용하기 위한 용도 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<body>
-    <header>
-
-    </header>
-
-
-    <section class="make-center">
-        <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
-        <button id="open-room">Open Room</button>
-        <button id="join-room">Join Room</button>
-        <button id="open-or-join-room">Auto Open Or Join Room</button>
-
-        <div id="videos-container" style="margin: 20px 0;"></div>
-
-        <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
-    </section>
-
-    <script>
-        // GET 방식으로 넘어온 주소의 경우 input에 바로 입력
-        function getQuerystring(paramName) {
-            var _tempUrl = window.location.search.substring(1); //url에서 처음부터 '?'까지 삭제 
-            var _tempArray = _tempUrl.split('&'); // '&'을 기준으로 분리하기 
-            for (var i = 0; _tempArray.length; i++) {
-                var _keyValuePair = _tempArray[i].split('='); // '=' 을 기준으로 분리하기 
-                if (_keyValuePair[0] == paramName) { // _keyValuePair[0] : 파라미터 명 
-                    // _keyValuePair[1] : 파라미터 값 
-                    return _keyValuePair[1];
-                }
-            }
-        }
-        document.getElementById('room-id').value = getQuerystring('id');
-    </script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lamp Games - 방송 송출화면</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 개인용 css 파일 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
+    <!-- html 각각 관리(navbar, footer 등) -->
+    <script src="./shareHTML/includeHTML.js"></script>
+    <script src="./js/materializecss.js"></script>
 
     <script src="/dist/RTCMultiConnection.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <header include-html="shareHTML/nav.html"></header>
+
+
+    <div class="container">
+        <div class="row"></div>
+        <div class="row">
+            <input id="room-id" type="hidden">
+            <div class="input-field col s9">
+
+                <input id="roomtitle" type="text" class="validate">
+                <label for="roomtitle">방송 제목</label>
+            </div>
+            <button id="open-room" class="waves-effect waves-light btn col s3" style="margin-top: 20px">방송 시작하기</button>
+            <script>
+            </script>
+        </div>
+        <div class="row">
+            <div id="videos-container" class="col s9"></div>
+
+            <!-- <div id="chatroom" class="col s3">
+                <ul id="messages"></ul>
+                <form action="">
+                    <input id="m" autocomplete="off" /><button class="waves-effect waves-light btn">Send</button>
+                </form> -->
+            <!-- That’s all it takes to load the socket.io-client, which exposes a io global, and then connect. -->
+            <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+                <script>
+                    $(function() {
+                        var socket = io('/chatting');
+                        $('form').submit(function(e) {
+                            e.preventDefault(); // prevents page reloading
+                            // m에 들어간 값을 chat message 로 넘겨줌
+                            socket.emit('chat message', $('#m').val());
+                            $('#m').val('');
+                            return false;
+                        });
+                        // 뿌려져 받은 메시지를 내 화면에 출력
+                        socket.on('chat message', function(msg) {
+                            $('#messages').append($('<li>').text(msg));
+                        });
+                    });
+                </script>
+            </div> -->
+        </div>
+    </div>
+
+    <button id="join-room" style="display:none;">Join Room</button>
+    <button id="open-or-join-room" style="display:none;">Auto Open Or Join Room</button>
+    <div class="row">
+
+
+    </div>
+
+
 
     <!-- custom layout for HTML5 audio/video elements -->
     <link rel="stylesheet" href="/dev/getHTMLMediaElement.css">
     <script src="/dev/getHTMLMediaElement.js"></script>
     <script>
+        function makeid() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < 10; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+        }
         // ......................................................
         // .......................UI Code........................
         // ......................................................
         document.getElementById('open-room').onclick = function() {
             disableInputButtons();
+            document.getElementById('room-id').value = makeid();
+            connection.streamtitle = document.getElementById("roomtitle").value;
             connection.open(document.getElementById('room-id').value, function() {
-                showRoomURL(connection.sessionid);
+                // showRoomURL(connection.sessionid);
             });
         };
 
@@ -114,6 +158,7 @@
 
         connection.socketMessageEvent = 'video-broadcast-demo';
 
+
         connection.session = {
             audio: true,
             video: true,
@@ -159,10 +204,10 @@
             }
             video.srcObject = event.stream;
 
-            var width = parseInt(connection.videosContainer.clientWidth / 3) - 20;
+            var width = parseInt(connection.videosContainer.clientWidth) / 1.2;
             var mediaElement = getHTMLMediaElement(video, {
                 title: event.userid,
-                buttons: ['full-screen'],
+                buttons: [],
                 width: width,
                 showOnMouseEnter: false
             });
@@ -297,26 +342,12 @@
         }
     </script>
 
-    <section>
-        <p>
-            You can write cordova/ionic/phonegap based <a href="https://www.rtcmulticonnection.org/docs/Write-iOS-Apps/" target="_blank">iOS</a> or <a href="https://www.rtcmulticonnection.org/docs/Write-Android-Apps/" target="_blank">Android</a> apps
-            for this demo as well.
-        </p>
-
-        <p>
-            You can run same demo on Safari-11 as well. (both on MacOSX & iOS)
-        </p>
-
-        <p>
-            Microsoft Edge is also supported.
-        </p>
-    </section>
-
-    <footer>
-        <small id="send-message"></small>
-    </footer>
+    <footer include-html="shareHTML/footer.html"> </footer>
 
     <script src="https://cdn.webrtc-experiment.com/common.js"></script>
+    <script>
+        includeHTML();
+    </script>
 </body>
 
 </html>

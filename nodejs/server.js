@@ -131,26 +131,23 @@ streaming.on('connection', function(socket) {
     RTCMultiConnectionServer.addSocket(socket);
 
     const params = socket.handshake.query;
-    console.log(params.socketMessageEvent);
-    if (params.socketMessageEvent == 'video-broadcast-demo') {
+
+    console.log(params);
+
+    if (params.msgEvent == 'video-broadcast-demo') {
         if (!streamingRoom[params.sessionid]) {
             streamingRoom[params.sessionid] = {
-                name: params.sessionid,
+                id: params.sessionid,
+                title: params.streamtitle,
                 watchcount: 0
             }
         } else {
             streamingRoom[params.sessionid].watchcount++;
-
         }
     }
     if (!params.socketCustomEvent) {
         params.socketCustomEvent = 'custom-message';
     }
-    console.log(params);
-
-
-
-    console.log(Object.keys(streamingRoom).length);
 
 
     socket.on('disconnection', () => {
@@ -174,3 +171,21 @@ lobby.on('connection', (socket) => {
         socket.emit('stream', streamingRoom);
     }
 });
+
+// io.of('/chatting').on('connection', function(socket) {
+//     console.log('a user connected');
+//     socket.on('disconnect', function() {
+//         console.log('user disconnect');
+//     });
+//     // 채팅 메시지 받을 경우 콘솔에 출력
+//     // socket.on('chat message', function(msg) {
+//     //     console.log('message: ' + msg);
+//     // });
+
+//     socket.broadcast.emit('Server : 접속 완료');
+
+//     // 채팅 메시지를 받았을 경우 다시 뿌려줌
+//     socket.on('chat message', function(msg) {
+//         io.emit('chat message', msg);
+//     });
+// });

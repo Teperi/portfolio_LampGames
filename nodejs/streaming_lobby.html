@@ -22,14 +22,14 @@
 </head>
 
 <body>
-    <header include-html="shareHTML/nav.html">
-
-    </header>
+    <header include-html="shareHTML/nav.html"> </header>
     <main>
 
         <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.html"></ul>
-
-        <div id='test'></div>
+        <div class="container">
+            <div class="row"></div>
+            <div id='test' class="row"></div>
+        </div>
 
         <footer include-html="shareHTML/footer.html"> </footer>
 
@@ -51,8 +51,21 @@
                 socket.on('stream', (data) => {
                     Object.keys(data).forEach(element => {
                         var a = document.createElement("a");
-                        a.href = 'video-broadcasting.html?id=' + data[element].name;
-                        a.innerHTML = 'video-broadcasting.html?id=' + data[element].name;
+                        a.href = 'video-broadcasting.html?id=' + data[element].id;
+                        var b = document.createElement("div");
+                        b.classList.add("col");
+                        b.classList.add("s3");
+                        var c = document.createElement("div");
+                        c.classList.add("card");
+                        c.classList.add("hoverable");
+                        var d = document.createElement("div");
+                        d.classList.add("card-content");
+                        d.classList.add("truncate");
+                        d.classList.add("black-text");
+                        d.innerHTML = data[element].title;
+                        c.appendChild(d);
+                        b.appendChild(c);
+                        a.appendChild(b);
                         test.appendChild(a);
                     });
                 });
