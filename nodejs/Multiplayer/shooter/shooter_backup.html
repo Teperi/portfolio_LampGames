@@ -281,9 +281,11 @@
             // player 의 경우 setVelocity로 이동
             // hp bar 의 경우 player의 좌표를 기준으로 좌표를 변경하고 다시 그려줌
             if (cursors.left1.isDown || cursors.left2.isDown) {
-                player.setVelocityX(-150);
+                player.setVelocityX(-300);
                 player.hp.x = (player.x - 27);
                 player.hp.draw();
+                cursors.left1.isDown = false;
+                cursors.left2.isDown = false;
             } else if (cursors.right1.isDown || cursors.right2.isDown) {
                 player.setVelocityX(150);
                 player.hp.x = (player.x - 27);

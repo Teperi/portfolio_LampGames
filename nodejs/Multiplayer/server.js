@@ -15,7 +15,9 @@ app.get("/", function(request, response) {
     response.sendFile(__dirname + '/shooter/shooter.html');
 });
 
-io.on('connection', function(socket) {
+var gamesocket = io.of('/game');
+
+gamesocket.on('connection', function(socket) {
     console.log("New client has connected with id:", socket.id);
     socket.on('new-player', function(state_data) { // Listen for new-player event on this client 
         console.log("New player has state:", state_data);
@@ -42,7 +44,7 @@ io.on('connection', function(socket) {
         // players 에 저장된 데이터 지우기aw
         delete players[socket.id];
         // 다른 클라이언트에 플레이어가 나갔다고 알림
-        io.emit('disconnect', socket.id);
+        gamesocket.emit('disconnect', socket.id);
     });
 
 
@@ -65,43 +67,43 @@ io.on('connection', function(socket) {
         var new_bullet = data;
         bullet_array.push(new_bullet);
     });
+
+    // Update the bullets 60 times per frame and send updates 
+    function ServerGameLoop() {
+        for (var i = 0; i < bullet_array.length; i++) {
+            var bullet = bullet_array[i];
+            bullet.x += bullet.speed_x;
+            bullet.y += bullet.speed_y;
+
+            // Check if this bullet is close enough to hit any player 
+            for (var id in players) {
+                if (bullet.owner_id != id) {
+                    // And your own bullet shouldn't kill you
+                    var dx = players[id].x - bullet.x;
+                    var dy = players[id].y - bullet.y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 40) {
+                        gamesocket.emit('playerHit', id); // Tell everyone this player got hit
+                    }
+                }
+            }
+
+            // Remove if it goes too far off screen 
+            if (bullet.x < -10 || bullet.x > 1000 || bullet.y < -10 || bullet.y > 1000) {
+                bullet_array.splice(i, 1);
+                i--;
+            }
+
+        }
+        // Tell everyone where all the bullets are by sending the whole array
+        gamesocket.emit("bulletsUpdate", bullet_array);
+    }
+
+    setInterval(ServerGameLoop, 16);
 });
 
 // Listen on port 3000
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 8080));
 http.listen(app.get('port'), function() {
     console.log('listening on port', app.get('port'));
 });
-
-// Update the bullets 60 times per frame and send updates 
-function ServerGameLoop() {
-    for (var i = 0; i < bullet_array.length; i++) {
-        var bullet = bullet_array[i];
-        bullet.x += bullet.speed_x;
-        bullet.y += bullet.speed_y;
-
-        // Check if this bullet is close enough to hit any player 
-        for (var id in players) {
-            if (bullet.owner_id != id) {
-                // And your own bullet shouldn't kill you
-                var dx = players[id].x - bullet.x;
-                var dy = players[id].y - bullet.y;
-                var dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 40) {
-                    io.emit('playerHit', id); // Tell everyone this player got hit
-                }
-            }
-        }
-
-        // Remove if it goes too far off screen 
-        if (bullet.x < -10 || bullet.x > 1000 || bullet.y < -10 || bullet.y > 1000) {
-            bullet_array.splice(i, 1);
-            i--;
-        }
-
-    }
-    // Tell everyone where all the bullets are by sending the whole array
-    io.emit("bulletsUpdate", bullet_array);
-}
-
-setInterval(ServerGameLoop, 16);
