@@ -24,22 +24,6 @@
     <script src="/dist/RTCMultiConnection.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
-    <style>
-        #messages {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #messages li {
-            padding: 5px 10px;
-        }
-        
-        #messages li:nth-child(odd) {
-            background: #eee;
-        }
-    </style>
 </head>
 
 <body>
@@ -61,9 +45,31 @@
         </div>
         <div class="row">
             <div id="videos-container" class="col s9"></div>
-            <div id="chatroom" class="col s3">
+
+            <!-- <div id="chatroom" class="col s3">
                 <ul id="messages"></ul>
-            </div>
+                <form action="">
+                    <input id="m" autocomplete="off" /><button class="waves-effect waves-light btn">Send</button>
+                </form> -->
+            <!-- That’s all it takes to load the socket.io-client, which exposes a io global, and then connect. -->
+            <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+                <script>
+                    $(function() {
+                        var socket = io('/chatting');
+                        $('form').submit(function(e) {
+                            e.preventDefault(); // prevents page reloading
+                            // m에 들어간 값을 chat message 로 넘겨줌
+                            socket.emit('chat message', $('#m').val());
+                            $('#m').val('');
+                            return false;
+                        });
+                        // 뿌려져 받은 메시지를 내 화면에 출력
+                        socket.on('chat message', function(msg) {
+                            $('#messages').append($('<li>').text(msg));
+                        });
+                    });
+                </script>
+            </div> -->
         </div>
     </div>
 
@@ -98,20 +104,6 @@
             connection.streamtitle = document.getElementById("roomtitle").value;
             connection.open(document.getElementById('room-id').value, function() {
                 // showRoomURL(connection.sessionid);
-                var socket22 = io('/chatting');
-
-                // $('form').submit(function(e) {
-                //     e.preventDefault(); // prevents page reloading
-                //     // m에 들어간 값을 chat message 로 넘겨줌
-                //     socket.emit('chat message', $('#m').val());
-                //     $('#m').val('');
-                //     return false;
-                // });
-                // 뿌려져 받은 메시지를 내 화면에 출력
-                socket22.on('chat message', function(msg) {
-                    console.log(msg);
-                    $('#messages').append($('<li>').text(msg));
-                });
             });
         };
 
@@ -164,62 +156,40 @@
         // comment-out below line if you do not have your own socket.io server
         // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
-        connection.socketMessageEvent = 'video-broadcast-demo';
-
+        connection.socketMessageEvent = 'audio-plus-screen-sharing-demo';
 
         connection.session = {
-            audio: true,
-            video: true,
+            audio: 'two-way', // merely audio will be two-way, rest of the streams will be oneway
+            screen: true,
             oneway: true
         };
 
         connection.sdpConstraints.mandatory = {
-            OfferToReceiveAudio: false,
-            OfferToReceiveVideo: false
+            OfferToReceiveAudio: true,
+            OfferToReceiveVideo: true
         };
 
         connection.videosContainer = document.getElementById('videos-container');
+        connection.audiosContainer = document.getElementById('audios-container');
+
         connection.onstream = function(event) {
-            var existing = document.getElementById(event.streamid);
-            if (existing && existing.parentNode) {
-                existing.parentNode.removeChild(existing);
+            if (event.type === 'remote' && !connection.session.video) {
+                // document.getElementById('btn-add-video').disabled = false;
             }
 
-            event.mediaElement.removeAttribute('src');
-            event.mediaElement.removeAttribute('srcObject');
-            event.mediaElement.muted = true;
-            event.mediaElement.volume = 0;
-
-            var video = document.createElement('video');
-
-            try {
-                video.setAttributeNode(document.createAttribute('autoplay'));
-                video.setAttributeNode(document.createAttribute('playsinline'));
-                video.setAttributeNode(document.createAttribute('controls'));
-            } catch (e) {
-                video.setAttribute('autoplay', true);
-                video.setAttribute('playsinline', true);
-                video.setAttribute('controls', true);
-            }
-
-            if (event.type === 'local') {
-                video.volume = 0;
-                try {
-                    video.setAttributeNode(document.createAttribute('muted'));
-                } catch (e) {
-                    video.setAttribute('muted', true);
-                }
-            }
-            video.srcObject = event.stream;
-
-            var width = parseInt(connection.videosContainer.clientWidth) / 1.2;
-            var mediaElement = getHTMLMediaElement(video, {
+            var width = event.mediaElement.clientWidth || connection.videosContainer.clientWidth;
+            var mediaElement = getMediaElement(event.mediaElement, {
                 title: event.userid,
                 buttons: [],
                 width: width,
                 showOnMouseEnter: false
             });
-            connection.videosContainer.appendChild(mediaElement);
+
+            if (event.stream.isScreen) {
+                connection.videosContainer.appendChild(mediaElement);
+            } else {
+                connection.audiosContainer.appendChild(mediaElement);
+            }
 
             setTimeout(function() {
                 mediaElement.media.play();
@@ -232,37 +202,32 @@
             var mediaElement = document.getElementById(event.streamid);
             if (mediaElement) {
                 mediaElement.parentNode.removeChild(mediaElement);
-
-                if (event.userid === connection.sessionid && !connection.isInitiator) {
-                    alert('Broadcast is ended. We will reload this page to clear the cache.');
-                    location.reload();
-                }
             }
         };
 
-        connection.onMediaError = function(e) {
-            if (e.message === 'Concurrent mic process limit.') {
-                if (DetectRTC.audioInputDevices.length <= 1) {
-                    alert('Please select external microphone. Check github issue number 483.');
+        // document.getElementById('btn-add-video').onclick = function() {
+        //     this.disabled = true;
+        //     connection.session.video = true;
+        //     connection.addStream({
+        //         video: true,
+        //         oneway: true
+        //     });
+        // };
+
+        // Using getScreenId.js to capture screen from any domain
+        // You do NOT need to deploy Chrome Extension YOUR-Self!!
+        connection.getScreenConstraints = function(callback) {
+            getScreenConstraints(function(error, screen_constraints) {
+                if (!error) {
+                    screen_constraints = connection.modifyScreenConstraints(screen_constraints);
+                    callback(error, screen_constraints);
                     return;
                 }
-
-                var secondaryMic = DetectRTC.audioInputDevices[1].deviceId;
-                connection.mediaConstraints.audio = {
-                    deviceId: secondaryMic
-                };
-
-                connection.join(connection.sessionid);
-            }
+                throw error;
+            });
         };
 
-        // ..................................
-        // ALL below scripts are redundant!!!
-        // ..................................
-
         function disableInputButtons() {
-            document.getElementById('room-id').onkeyup();
-
             document.getElementById('open-or-join-room').disabled = true;
             document.getElementById('open-room').disabled = true;
             document.getElementById('join-room').disabled = true;
@@ -288,7 +253,6 @@
 
             roomURLsDiv.style.display = 'block';
         }
-
 
         (function() {
             var params = {},
@@ -352,8 +316,6 @@
     </script>
 
     <footer include-html="shareHTML/footer.html"> </footer>
-    <script>
-    </script>
 
     <script src="https://cdn.webrtc-experiment.com/common.js"></script>
     <script>

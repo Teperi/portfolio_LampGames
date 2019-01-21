@@ -28,6 +28,9 @@
         <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.html"></ul>
         <div class="container">
             <div class="row"></div>
+            <div class="row">
+                <a href="video-streaming.html" class="waves-effect waves-light btn-large col s3 hoverable jua-font" style="font-size:large;">방송 시작하기</a>
+            </div>
             <div id='test' class="row"></div>
         </div>
 
@@ -45,16 +48,15 @@
                 });
 
                 socket.on('nothing', () => {
-                    test.innerHTML = 'no';
+                    test.innerHTML = '방송이 없습니다.';
                 });
 
                 socket.on('stream', (data) => {
                     Object.keys(data).forEach(element => {
                         var a = document.createElement("a");
-                        a.href = 'video-broadcasting.html?id=' + data[element].id;
-                        var b = document.createElement("div");
-                        b.classList.add("col");
-                        b.classList.add("s3");
+                        a.classList.add("col");
+                        a.classList.add("s3");
+                        a.href = 'video-viewer.html?id=' + data[element].id;
                         var c = document.createElement("div");
                         c.classList.add("card");
                         c.classList.add("hoverable");
@@ -64,8 +66,8 @@
                         d.classList.add("black-text");
                         d.innerHTML = data[element].title;
                         c.appendChild(d);
-                        b.appendChild(c);
-                        a.appendChild(b);
+                        a.appendChild(c);
+
                         test.appendChild(a);
                     });
                 });

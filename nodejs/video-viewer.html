@@ -24,7 +24,6 @@
     <script src="/dist/RTCMultiConnection.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
     <style>
         #messages {
             list-style-type: none;
@@ -50,19 +49,52 @@
         <div class="row"></div>
         <div class="row">
             <input id="room-id" type="hidden">
-            <div class="input-field col s9">
-
-                <input id="roomtitle" type="text" class="validate">
-                <label for="roomtitle">방송 제목</label>
-            </div>
-            <button id="open-room" class="waves-effect waves-light btn col s3" style="margin-top: 20px">방송 시작하기</button>
             <script>
+                // GET 방식으로 넘어온 주소의 경우 input에 바로 입력
+                function getQuerystring(paramName) {
+                    var _tempUrl = window.location.search.substring(1); //url에서 처음부터 '?'까지 삭제 
+                    var _tempArray = _tempUrl.split('&'); // '&'을 기준으로 분리하기 
+                    for (var i = 0; _tempArray.length; i++) {
+                        var _keyValuePair = _tempArray[i].split('='); // '=' 을 기준으로 분리하기 
+                        if (_keyValuePair[0] == paramName) { // _keyValuePair[0] : 파라미터 명 
+                            // _keyValuePair[1] : 파라미터 값 
+                            return _keyValuePair[1];
+                        }
+                    }
+                }
+                document.getElementById('room-id').value = getQuerystring('id');
             </script>
+            <span id="broadcastTitle" class="dohyeon-font" style="font-size:30px">방송 제목 : </span>
+            <span id="broadcastcount" class="dohyeon-font right" style="font-size:20px">시청자 수 : </span>
+            <button id="open-room" class="waves-effect waves-light btn" style="margin-top: 20px;display: none;">방송 시작하기</button>
         </div>
         <div class="row">
             <div id="videos-container" class="col s9"></div>
+
             <div id="chatroom" class="col s3">
                 <ul id="messages"></ul>
+                <form action="">
+                    <input id="m" autocomplete="off" /><button class="waves-effect waves-light btn">Send</button>
+                </form>
+                <!-- That’s all it takes to load the socket.io-client, which exposes a io global, and then connect. -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
+                <script>
+                    $(function() {
+                        var socket = io('/chatting');
+                        $('form').submit(function(e) {
+                            e.preventDefault(); // prevents page reloading
+                            // m에 들어간 값을 chat message 로 넘겨줌
+                            socket.emit('chat message', $('#m').val());
+                            $('#m').val('');
+                            return false;
+                        });
+                        // 뿌려져 받은 메시지를 내 화면에 출력
+                        socket.on('chat message', function(msg) {
+                            console.log(msg);
+                            $('#messages').append($('<li>').text(msg));
+                        });
+                    });
+                </script>
             </div>
         </div>
     </div>
@@ -98,20 +130,6 @@
             connection.streamtitle = document.getElementById("roomtitle").value;
             connection.open(document.getElementById('room-id').value, function() {
                 // showRoomURL(connection.sessionid);
-                var socket22 = io('/chatting');
-
-                // $('form').submit(function(e) {
-                //     e.preventDefault(); // prevents page reloading
-                //     // m에 들어간 값을 chat message 로 넘겨줌
-                //     socket.emit('chat message', $('#m').val());
-                //     $('#m').val('');
-                //     return false;
-                // });
-                // 뿌려져 받은 메시지를 내 화면에 출력
-                socket22.on('chat message', function(msg) {
-                    console.log(msg);
-                    $('#messages').append($('<li>').text(msg));
-                });
             });
         };
 
@@ -124,16 +142,17 @@
         //     };
         //     connection.join(document.getElementById('room-id').value);
         // };
-        if (window.location.search.substring(1).length > 0) {
-            window.onload = function() {
-                disableInputButtons();
-                connection.sdpConstraints.mandatory = {
-                    OfferToReceiveAudio: true,
-                    OfferToReceiveVideo: true
-                };
-                connection.join(document.getElementById('room-id').value);
-            }
+
+        window.onload = function() {
+            disableInputButtons();
+            connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: true,
+                OfferToReceiveVideo: true
+            };
+            connection.join(document.getElementById('room-id').value);
+
         }
+
 
         document.getElementById('open-or-join-room').onclick = function() {
             disableInputButtons();
@@ -289,7 +308,6 @@
             roomURLsDiv.style.display = 'block';
         }
 
-
         (function() {
             var params = {},
                 r = /([^&=]+)=?([^&]*)/g;
@@ -353,6 +371,11 @@
 
     <footer include-html="shareHTML/footer.html"> </footer>
     <script>
+        var socket = io();
+        socket.on('viewer', function(object) {
+            document.getElementById('broadcastTitle').innerHTML += object.title;
+            document.getElementById('broadcastcount').innerHTML += object.watchcount;
+        });
     </script>
 
     <script src="https://cdn.webrtc-experiment.com/common.js"></script>

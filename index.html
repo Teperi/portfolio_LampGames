@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="col s12 m6 l3">
-                        <a href="http://localhost:3000/">
+                        <a href="http://localhost:3000/shootergame/shooter.html">
                             <div class="card hoverable">
                                 <div class="card-image cardVerticalImgDiv">
                                     <img class="cardVerticalImg" src="/images/tankgame.png">
@@ -97,11 +97,12 @@
                 <h1>Streaming</h1>
             </blockquote>
             <div class="row">
-                <form action="//localhost:8080/streaming_lobby" method="post">
-                    <input name="user_id" type="hidden" value=<?php echo $_SESSION[ "user_id"]?>>
-                    <input name="nickName" type="hidden" value=<?php echo $_SESSION[ "nickName"]?>>
+                <a href="//localhost:3000/streaming_lobby.html" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">더보기</a>
+                <!-- <form action="//localhost:3000/streaming_lobby.html" method="post">
+                    <input name="user_id" type="hidden" value=<?php if($_SESSION) {echo $_SESSION[ "user_id"];} ?>>
+                    <input name="nickName" type="hidden" value=<?php if($_SESSION) {echo $_SESSION[ "nickName"];} ?>>
                     <button type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">더보기</button>
-                </form>
+                </form> -->
             </div>
 
             <blockquote class="dohyeon-font">

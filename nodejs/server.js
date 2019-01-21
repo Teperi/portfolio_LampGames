@@ -5,7 +5,7 @@ var io = require('socket.io').listen(http);
 
 const RTCMultiConnectionServer = require('rtcmulticonnection-server');
 const path = require('path');
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 
 app.set('port', port);
@@ -17,7 +17,7 @@ http.listen(app.get('port'), function() {
 app.use('/', express.static(__dirname));
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index2.html'));
+    res.sendFile(path.join(__dirname + '/streaming_lobby.html'));
 });
 
 
@@ -132,8 +132,6 @@ streaming.on('connection', function(socket) {
 
     const params = socket.handshake.query;
 
-    console.log(params);
-
     if (params.msgEvent == 'video-broadcast-demo') {
         if (!streamingRoom[params.sessionid]) {
             streamingRoom[params.sessionid] = {
@@ -143,6 +141,8 @@ streaming.on('connection', function(socket) {
             }
         } else {
             streamingRoom[params.sessionid].watchcount++;
+            console.log(streamingRoom[params.sessionid]);
+            streaming.emit('viewer', streamingRoom[params.sessionid]);
         }
     }
     if (!params.socketCustomEvent) {
@@ -158,6 +158,9 @@ streaming.on('connection', function(socket) {
         socket.broadcast.emit(params.socketCustomEvent, message);
     });
 
+
+
+
     //sessionid 가 방 제목으로 가면 될듯.
     // auto open or join 버튼을 사용 안하는 방향으로 준비.
 });
@@ -172,20 +175,21 @@ lobby.on('connection', (socket) => {
     }
 });
 
-// io.of('/chatting').on('connection', function(socket) {
-//     console.log('a user connected');
-//     socket.on('disconnect', function() {
-//         console.log('user disconnect');
-//     });
-//     // 채팅 메시지 받을 경우 콘솔에 출력
-//     // socket.on('chat message', function(msg) {
-//     //     console.log('message: ' + msg);
-//     // });
+io.of('/chatting').on('connection', function(socket) {
+    console.log('a user connected');
+    socket.on('disconnect', function() {
+        console.log('user disconnect');
+    });
+    // 채팅 메시지 받을 경우 콘솔에 출력
+    // socket.on('chat message', function(msg) {
+    //     console.log('message: ' + msg);
+    // });
 
-//     socket.broadcast.emit('Server : 접속 완료');
+    socket.broadcast.emit('Server : 접속 완료');
 
-//     // 채팅 메시지를 받았을 경우 다시 뿌려줌
-//     socket.on('chat message', function(msg) {
-//         io.emit('chat message', msg);
-//     });
-// });
+    // 채팅 메시지를 받았을 경우 다시 뿌려줌
+    socket.on('chat message', function(msg) {
+        console.log('message: ' + msg);
+        io.of('/chatting').emit('chat message', msg);
+    });
+});
