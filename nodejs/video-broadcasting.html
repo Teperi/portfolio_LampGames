@@ -14,39 +14,9 @@
 
 <body>
     <header>
-        <a class="logo" href="/demos/"><img src="/demos/logo.png" alt="RTCMultiConnection"></a>
-        <a href="/demos/" class="menu-explorer">Menu<img src="/demos/menu-icon.png" alt="Menu"></a>
-        <nav>
-            <li>
-                <a href="/demos/">Home</a>
-            </li>
-            <li>
-                <a href="https://www.rtcmulticonnection.org/docs/getting-started/">Getting Started</a>
-            </li>
-            <li>
-                <a href="https://www.rtcmulticonnection.org/FAQ/">FAQ</a>
-            </li>
-            <li>
-                <a href="https://www.youtube.com/playlist?list=PLPRQUXAnRydKdyun-vjKPMrySoow2N4tl">YouTube</a>
-            </li>
-            <li>
-                <a href="https://rtcmulticonnection.herokuapp.com/demos/">Demos</a>
-            </li>
-            <li>
-                <a href="https://github.com/muaz-khan/RTCMultiConnection/wiki">Wiki</a>
-            </li>
-            <li>
-                <a href="https://github.com/muaz-khan/RTCMultiConnection">Github</a>
-            </li>
-        </nav>
+
     </header>
 
-    <h1>
-        Video OneWay Broadcasting using RTCMultiConnection
-        <p class="no-mobile">
-            Multi-user (one-to-many) video broadcasting using star topology.
-        </p>
-    </h1>
 
     <section class="make-center">
         <input type="text" id="room-id" value="abcdef" autocorrect=off autocapitalize=off size=20>
@@ -58,6 +28,22 @@
 
         <div id="room-urls" style="text-align: center;display: none;background: #F1EDED;margin: 15px -10px;border: 1px solid rgb(189, 189, 189);border-left: 0;border-right: 0;"></div>
     </section>
+
+    <script>
+        // GET 방식으로 넘어온 주소의 경우 input에 바로 입력
+        function getQuerystring(paramName) {
+            var _tempUrl = window.location.search.substring(1); //url에서 처음부터 '?'까지 삭제 
+            var _tempArray = _tempUrl.split('&'); // '&'을 기준으로 분리하기 
+            for (var i = 0; _tempArray.length; i++) {
+                var _keyValuePair = _tempArray[i].split('='); // '=' 을 기준으로 분리하기 
+                if (_keyValuePair[0] == paramName) { // _keyValuePair[0] : 파라미터 명 
+                    // _keyValuePair[1] : 파라미터 값 
+                    return _keyValuePair[1];
+                }
+            }
+        }
+        document.getElementById('room-id').value = getQuerystring('id');
+    </script>
 
     <script src="/dist/RTCMultiConnection.js"></script>
     <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
@@ -258,7 +244,7 @@
         } else {
             roomid = connection.token();
         }
-        document.getElementById('room-id').value = roomid;
+        // document.getElementById('room-id').value = roomid;
         document.getElementById('room-id').onkeyup = function() {
             localStorage.setItem(connection.socketMessageEvent, document.getElementById('room-id').value);
         };

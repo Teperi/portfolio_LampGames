@@ -128,21 +128,34 @@ var streamingRoom = {};
 streaming.on('connection', function(socket) {
     // ----------------------
     // below code is optional
-
     RTCMultiConnectionServer.addSocket(socket);
 
     const params = socket.handshake.query;
+    console.log(params.socketMessageEvent);
+    if (params.socketMessageEvent == 'video-broadcast-demo') {
+        if (!streamingRoom[params.sessionid]) {
+            streamingRoom[params.sessionid] = {
+                name: params.sessionid,
+                watchcount: 0
+            }
+        } else {
+            streamingRoom[params.sessionid].watchcount++;
 
+        }
+    }
     if (!params.socketCustomEvent) {
         params.socketCustomEvent = 'custom-message';
     }
+    console.log(params);
 
-    if (streamingRoom == undefined) {
-        streamingRoom[socket.id] = {
-            name: params.sessionid,
-            watchcount: 1,
-        }
-    }
+
+
+    console.log(Object.keys(streamingRoom).length);
+
+
+    socket.on('disconnection', () => {
+        console.log('disconnection');
+    });
 
     socket.on(params.socketCustomEvent, function(message) {
         socket.broadcast.emit(params.socketCustomEvent, message);
@@ -150,6 +163,14 @@ streaming.on('connection', function(socket) {
 
     //sessionid 가 방 제목으로 가면 될듯.
     // auto open or join 버튼을 사용 안하는 방향으로 준비.
-    console.log(params);
+});
 
+var lobby = io.of('/lobby');
+
+lobby.on('connection', (socket) => {
+    if (Object.keys(streamingRoom).length <= 0) {
+        socket.emit('nothing');
+    } else {
+        socket.emit('stream', streamingRoom);
+    }
 });

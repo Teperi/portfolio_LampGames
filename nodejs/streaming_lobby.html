@@ -14,7 +14,7 @@
     <title>Lamp Games - news & Play Games!!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 개인용 css 파일 -->
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="/main.css" /> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="./shareHTML/includeHTML.js"></script>
     <script src="./js/materializecss.js"></script>
@@ -29,21 +29,36 @@
 
         <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.html"></ul>
 
-
+        <div id='test'></div>
 
         <footer include-html="shareHTML/footer.html"> </footer>
 
         <!-- HTML 공통 파일 포함 -->
         <script>
             document.addEventListener('DOMContentLoaded', () => {
+                var test = document.getElementById('test');
                 includeHTML();
-                var socket = io();
+                var socket = io('/lobby');
                 socket.on('session_info', (data) => {
                     console.log(data);
                     console.log(data.nickName);
-                })
+                });
+
+                socket.on('nothing', () => {
+                    test.innerHTML = 'no';
+                });
+
+                socket.on('stream', (data) => {
+                    Object.keys(data).forEach(element => {
+                        var a = document.createElement("a");
+                        a.href = 'video-broadcasting.html?id=' + data[element].name;
+                        a.innerHTML = 'video-broadcasting.html?id=' + data[element].name;
+                        test.appendChild(a);
+                    });
+                });
             });
         </script>
+
 
     </main>
 </body>
