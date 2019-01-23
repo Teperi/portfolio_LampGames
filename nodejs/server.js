@@ -150,8 +150,8 @@ streaming.on('connection', function(socket) {
     }
 
 
-    socket.on('disconnection', () => {
-        console.log('disconnection');
+    socket.on('disconnect', () => {
+        console.log('disconnection stream');
     });
 
     socket.on(params.socketCustomEvent, function(message) {
@@ -176,7 +176,6 @@ lobby.on('connection', (socket) => {
 });
 
 io.of('/chatting').on('connection', function(socket) {
-    console.log('a user connected');
     socket.on('disconnect', function() {
         console.log('user disconnect');
     });
@@ -189,7 +188,6 @@ io.of('/chatting').on('connection', function(socket) {
 
     // 채팅 메시지를 받았을 경우 다시 뿌려줌
     socket.on('chat message', function(msg) {
-        console.log('message: ' + msg);
         io.of('/chatting').emit('chat message', msg);
     });
 });
