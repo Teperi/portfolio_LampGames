@@ -135,13 +135,14 @@ streaming.on('connection', function(socket) {
     if (params.msgEvent == 'video-broadcast-demo') {
         if (!streamingRoom[params.sessionid]) {
             streamingRoom[params.sessionid] = {
-                id: params.sessionid,
+                userid: params.userid,
+                sessionid: params.sessionid,
                 title: params.streamtitle,
                 watchcount: 0
             }
         } else {
             streamingRoom[params.sessionid].watchcount++;
-            console.log(streamingRoom[params.sessionid]);
+            // emit 의 역할은 어디로?
             streaming.emit('viewer', streamingRoom[params.sessionid]);
         }
     }
@@ -150,8 +151,13 @@ streaming.on('connection', function(socket) {
     }
 
 
-    socket.on('disconnect', () => {
-        console.log('disconnection stream');
+    socket.on('disconnect-with', (data) => {
+        if (data in streamingRoom) {
+            //방송 삭제
+            delete streamingRoom[data];
+        } else {
+            console.log("시청자");
+        }
     });
 
     socket.on(params.socketCustomEvent, function(message) {

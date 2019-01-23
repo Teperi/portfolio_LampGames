@@ -56,14 +56,15 @@
                 <label for="roomtitle">방송 제목</label>
             </div>
             <button id="open-room" class="waves-effect waves-light btn col s3" style="margin-top: 20px">방송 시작하기</button>
-            <script>
-            </script>
         </div>
         <div class="row">
             <div id="videos-container" class="col s9"></div>
             <div id="chatroom" class="col s3">
                 <ul id="messages"></ul>
             </div>
+        </div>
+        <div class="row">
+            <button id="close-room" class="waves-effect waves-light btn col s3 offset-s9 disabled" style="margin-top: 20px">방송 종료하기</button>
         </div>
     </div>
 
@@ -97,6 +98,7 @@
             document.getElementById('room-id').value = makeid();
             connection.streamtitle = document.getElementById("roomtitle").value;
             connection.open(document.getElementById('room-id').value, function() {
+                document.getElementById('close-room').classList.remove('disabled');
                 // showRoomURL(connection.sessionid);
                 var socket22 = io('/chatting');
 
@@ -151,6 +153,12 @@
                 }
             });
         };
+
+        document.getElementById('close-room').onclick = function() {
+            if (confirm('방송을 종료하시겠습니까?')) {
+                connection.disconnectWith(document.getElementById('room-id').value, history.back());
+            }
+        }
 
         // ......................................................
         // ..................RTCMultiConnection Code.............
