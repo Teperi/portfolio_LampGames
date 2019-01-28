@@ -353,36 +353,36 @@ var Game = new Phaser.Class({
                 self.otherPlayers.getChildren()[i].alpha = 1;
             }
         }
-
-
         // 좌우 컨트롤
         // player 의 경우 setVelocity로 이동
         // hp bar 의 경우 player의 좌표를 기준으로 좌표를 변경하고 다시 그려줌
-        if (cursors.left1.isDown || cursors.left2.isDown) {
-            player.setVelocityX(-150);
-            player.hp.x = (player.x - 27);
-            player.hp.draw();
-            player.nickname.destroy();
-            player.nickname = this.add.text(player.x - 27, player.y - 60, nickname._text, { fill: '#000000' });
-        } else if (cursors.right1.isDown || cursors.right2.isDown) {
+        if (cursors.right1.isDown || cursors.right2.isDown) {
             player.setVelocityX(150);
             player.hp.x = (player.x - 27);
             player.hp.draw();
             player.nickname.destroy();
             player.nickname = this.add.text(player.x - 27, player.y - 60, nickname._text, { fill: '#000000' });
+        } else if (cursors.left1.isDown || cursors.left2.isDown) {
+            player.setVelocityX(-150);
+            player.hp.x = (player.x - 27);
+            player.hp.draw();
+            player.nickname.destroy();
+            player.nickname = this.add.text(player.x - 27, player.y - 60, nickname._text, { fill: '#000000' });
+
         } else {
             player.setVelocityX(0);
         }
 
         // 상하 컨트롤
-        if (cursors.up1.isDown || cursors.up2.isDown) {
-            player.setVelocityY(-150);
+
+        if (cursors.down1.isDown || cursors.down2.isDown) {
+            player.setVelocityY(150);
             player.hp.y = (player.y - 40);
             player.hp.draw();
             player.nickname.destroy();
             player.nickname = this.add.text(player.x - 27, player.y - 60, nickname._text, { fill: '#000000' });
-        } else if (cursors.down1.isDown || cursors.down2.isDown) {
-            player.setVelocityY(150);
+        } else if (cursors.up1.isDown || cursors.up2.isDown) {
+            player.setVelocityY(-150);
             player.hp.y = (player.y - 40);
             player.hp.draw();
             player.nickname.destroy();

@@ -3,7 +3,7 @@ include $_SERVER["DOCUMENT_ROOT"] . '/php/simplehtmldom/simple_html_dom.php';
 
 function get_content($url)
 {
-    $agent = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.125 Safari/533.4';
+    $agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36';
     $curlsession = curl_init();
     curl_setopt($curlsession, CURLOPT_URL, $url);
     curl_setopt($curlsession, CURLOPT_HEADER, false);

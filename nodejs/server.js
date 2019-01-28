@@ -20,9 +20,6 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/streaming_lobby.html'));
 });
 
-
-
-
 // --------------------------
 // socket.io codes goes below
 
@@ -116,7 +113,7 @@ gamesocket.on('connection', function(socket) {
         gamesocket.emit("bulletsUpdate", bullet_array);
     }
 
-    setInterval(ServerGameLoop, 16);
+    setInterval(ServerGameLoop, 30);
 });
 
 

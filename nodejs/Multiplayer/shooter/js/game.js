@@ -176,9 +176,7 @@ var Game = new Phaser.Class({
             'left1': Phaser.Input.Keyboard.KeyCodes.LEFT,
             'left2': Phaser.Input.Keyboard.KeyCodes.A,
             'right1': Phaser.Input.Keyboard.KeyCodes.RIGHT,
-            'right2': Phaser.Input.Keyboard.KeyCodes.D,
-            'space': Phaser.Input.Keyboard.KeyCodes.SPACE,
-            'shift': Phaser.Input.Keyboard.KeyCodes.SHIFT
+            'right2': Phaser.Input.Keyboard.KeyCodes.D
         });
 
 
@@ -364,6 +362,7 @@ var Game = new Phaser.Class({
             player.hp.draw();
             player.nickname.destroy();
             player.nickname = this.add.text(player.x - 27, player.y - 60, nickname._text, { fill: '#000000' });
+            console.log(cursors.left2.isDown);
         } else if (cursors.right1.isDown || cursors.right2.isDown) {
             player.setVelocityX(150);
             player.hp.x = (player.x - 27);
