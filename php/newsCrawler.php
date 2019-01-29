@@ -22,21 +22,79 @@ function get_content($url)
     }
     return $buffer;
 }
+date_default_timezone_set("Asia/Seoul");
+// 현재 날짜 받기
+$today = date("Ymd");
 
 // 목록에 있는 href 목록을 가져오기
-
-// // 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
-// $curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=20190127');
-// $localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/test.html', 'w');
-// fwrite($localfile, $curlfile);
-// fclose($localfile);
+// 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
+$curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=' . ($today - 1));
+$localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html', 'w');
+fwrite($localfile, $curlfile);
+fclose($localfile);
 
 // 2. localfile 에 있는 데이터를 simple htmle dom parser 로 변환해서 상황 보기
-$html = file_get_html($_SERVER['DOCUMENT_ROOT'] . '/savenews/test.html');
-$href = $html->find('ul.type06_headline');
-var_dump($href);
-// foreach ($href->find('li') as $value) {
-//     echo trim($value->find('href', 0)->plaintext) . '<br>';
+// 완전히 저장 된 후 아래 작업 시작을 위해 sleep 적용
+sleep(2);
+// html 파일을 simple dom parser 를 사용해서 a 태그 안의 href 만 가져옴
+$html = file_get_html($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html');
+$linklist;
+foreach ($html->find('div.list_body li a') as $value) {
+    $linklist[] = $value->href;
+}
+// clean up memory
+$html->clear();
+unset($html);
+
+// 그냥 news.naver.com 으로 접속하면 curl 에서 에러가 남.
+// 쉬운 크롤링을 막기 위한 도구로 확인됨
+// 따라서 모든 주소를 원본 기사의 주소로 바꿔줌
+// href 가 겹치는 경우를 모두 제거한 후 실제 뉴스 주소에 맞게 바꿈
+
+$newsUrlList;
+foreach (array_unique($linklist) as $value) {
+    $newsUrlList[] = str_replace("https://news.naver.com/main/read.nhn?mode=LPOD&mid=sec&", "https://sports.news.naver.com/esports/news/read.nhn?", $value);
+}
+
+// 3. 주소에 따라 뉴스 내용 html 로 저장하기
+// 데이터가 저장될 경로 설정
+$folder = $_SERVER["DOCUMENT_ROOT"] . '/savenews/' . ($today - 1);
+
+// 위에서 가져온 뉴스 URL 을 크롤링해서 서버에 직접 저장
+for ($i = 0; $i < sizeof($newsUrlList); $i++) {
+    //curl 파일로 가져오기
+    $curlfile = get_content($newsUrlList[$i]);
+
+    //폴더 체크 후 생성
+    if (!is_dir($folder)) {
+        mkdir($folder);
+    }
+    //
+    $localfile = fopen($folder . '/' . $i . '.html', 'w');
+    fwrite($localfile, $curlfile);
+    fclose($localfile);
+    sleep(1);
+
+    $html = file_get_html($folder . '/' . $i . '.html');
+
+    
+    echo trim($html->find('div.news_headline h4', 0)->plaintext);
+    echo '<br>';
+    echo trim($html->find('div.news_headline div.info span', 0)->plaintext);
+    echo '<br>';
+    echo $html->find('div.news_headline div.info a.press_link', 0)->href;
+    echo '<br>';
+
+    // clean up memory
+    $html->clear();
+    unset($html);
+}
+
+// foreach ($newsUrlList as $value) {
+//     $curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=' . ($today - 1));
+//     $localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html', 'w');
+//     fwrite($localfile, $curlfile);
+//     fclose($localfile);
 // }
 
 // $hreflist;
