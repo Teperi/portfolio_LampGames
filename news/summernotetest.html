@@ -22,11 +22,13 @@
     <script src="/js/materializecss.js"></script>
 
     <!-- include libraries(jQuery, bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 
     <!-- include summernote css/js -->
-    <link href="/summernote_dist/summernote-lite.css" rel="stylesheet">
-    <script src="/summernote_dist/summernote-lite.min.js"></script>
+    <link href="/summernote_dist/summernote.css" rel="stylesheet">
+    <script src="/summernote_dist/summernote.min.js"></script>
     <!-- include summernote-ko-KR -->
     <script src="/summernote_dist/lang/summernote-ko-KR.js"></script>
 </head>
@@ -102,15 +104,25 @@
         </script>
 
         <script>
+            //예외처리용 변수 (뒤로가기 방지)
             let titleclick = true;
             let categoryclick = false;
             let contentclick = false;
+
+            // 이미지 업로드용 변수
+            var sel_file;
+
             $(document).ready(() => {
                 // 내용 text 를 summernote 로 삽입
                 $('#content').summernote({
                     lang: 'ko-KR',
                     placeholder: '내용을 입력하세요.',
-                    height: 500
+                    height: 500,
+                    callbacks: {
+                        onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        }
+                    }
                 });
                 // 뉴스 작성의 경우 summernote 가 깨끗해야 하기 때문에 reset
                 $('#content').summernote('reset');
@@ -118,6 +130,12 @@
                 // 그냥 form reset 는 summernote 외 다른 내용만 reset 시킴
                 $('#reset').click(() => {
                     $('#content').summernote('reset');
+                    $("#img").attr("src", '');
+                    $('h5').css("display", "none");
+                });
+                // 작성 취소를 누르면 뒤로 돌아가도록 설정
+                $('#backbutton').click(() => {
+                    window.history.back();
                 });
 
                 // focus 와 blur 되었을 때 각각의 변수에 T/F 제공
@@ -161,6 +179,55 @@
                         e.preventDefault();
                     }
                 });
+
+                //summernote 내 이미지 처리 
+                //
+
+                function sendFile(files, editor, welEditable) {
+                    var form_data = new FormData();
+                    form_data.append('file', files);
+                    $.ajax({
+                        data: form_data,
+                        type: "POST",
+                        url: '/php/DBcommand/contentImageUpload.php',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(url) {
+                            $('#content').summernote('editor.insertImage', url);
+                            console.log(url);
+                        }
+                    });
+                }
+
+
+
+                //
+                //대표 이미지미리보기 js
+                //
+
+                $("#uploadImage").on("change", handleImgFileSelect);
+
+                function handleImgFileSelect(e) {
+                    var files = e.target.files;
+                    var filesArr = Array.prototype.slice.call(files);
+
+                    filesArr.forEach(function(f) {
+                        if (!f.type.match("image.*")) {
+                            alert("확장자는 이미지 확장자만 가능합니다.");
+                            return;
+                        }
+
+                        sel_file = f;
+
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $("#img").attr("src", e.target.result);
+                            $('h5').css("display", "block");
+                        }
+                        reader.readAsDataURL(f);
+                    });
+                }
             });
         </script>
     </main>
