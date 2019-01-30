@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<?php session_start();
+?>
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material 아이콘 사용하기 위한 용도 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lamp Games - news & Play Games!!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 개인용 css 파일 -->
+    <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
+    <!-- html 각각 관리(navbar, footer 등) -->
+    <script src="/shareHTML/includeHTML.js"></script>
+    <script src="/js/materializecss.js"></script>
+
+    <!-- include libraries(jQuery, bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <link href="/summernote_dist/summernote-lite.css" rel="stylesheet">
+    <script src="/summernote_dist/summernote-lite.min.js"></script>
+    <!-- include summernote-ko-KR -->
+    <script src="/summernote_dist/lang/summernote-ko-KR.js"></script>
+</head>
+
+<body>
+    <header include-html="/shareHTML/nav.html">
+
+    </header>
+    <main>
+
+        <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html"></ul>
+
+        <div class="container">
+            <div class="row">
+                <form action="/php/DBcommand/newNews.php" method="POST" id="news_New" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field col s9">
+                                <input id="title" name="title" type="text" class="validate" value="">
+                                <label for="title">제목</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input id="category" name="category" type="text" class="validate" value="">
+                                <label for="category">카테고리</label>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="col s12">
+                                <h5 class="center" style="display:none">이미지 미리보기</h5>
+                                <img class="materialboxed" id="img" style="display: block; margin-left: auto; margin-right: auto; width: 50%;" src="">
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>이미지</span>
+                                    <input type="file" id="uploadImage" name="d_file" accept="image/jpeg, image/png, image/jpg">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" id="uploadpath" type="text" name="mainimage" value="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <div class="col s12">
+                                <textarea id="content" name="content"></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="col s4">
+                                <button class="waves-effect waves-light btn col s12" id="backbutton" type="button">작성 취소</button>
+                            </div>
+                            <div class="col s4">
+                                <button class="waves-effect waves-light btn col s12" id="reset" type="reset">리셋</button>
+                            </div>
+                            <div class="col s4">
+                                <button class="waves-effect waves-light btn col s12" id="submit" type="submit">작성완료</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer include-html="/shareHTML/footer.html"> </footer>
+
+        <!-- HTML 공통 파일 포함 -->
+        <script>
+            includeHTML();
+        </script>
+
+        <script>
+            let titleclick = true;
+            let categoryclick = false;
+            let contentclick = false;
+            $(document).ready(() => {
+                // 내용 text 를 summernote 로 삽입
+                $('#content').summernote({
+                    lang: 'ko-KR',
+                    placeholder: '내용을 입력하세요.',
+                    height: 500
+                });
+                // 뉴스 작성의 경우 summernote 가 깨끗해야 하기 때문에 reset
+                $('#content').summernote('reset');
+                // 리셋 버튼을 누르면 summernote 내 내용도 같이 reset 되도록 함
+                // 그냥 form reset 는 summernote 외 다른 내용만 reset 시킴
+                $('#reset').click(() => {
+                    $('#content').summernote('reset');
+                });
+
+                // focus 와 blur 되었을 때 각각의 변수에 T/F 제공
+                // 이렇게 한 이유: 보통 글 작성시 뒤로가기 버튼을 막는 용도(예외처리)
+
+                $('#title').focus(() => {
+                    titleclick = true;
+                    console.log('title : ' + titleclick);
+                });
+                $('#category').focus(() => {
+                    categoryclick = true;
+                    console.log('category : ' + categoryclick);
+                });
+                $('#content').on('summernote.focus', function() {
+                    contentclick = true;
+                    console.log('content : ' + contentclick);
+                });
+                $('#title').blur(() => {
+                    titleclick = false;
+                    console.log('title : ' + titleclick);
+                });
+                $('#category').blur(() => {
+                    categoryclick = false;
+                    console.log('category : ' + categoryclick);
+                });
+                $('#content').on('summernote.blur', function() {
+                    contentclick = false;
+                    console.log('content : ' + contentclick);
+                });
+                $('#content').blur(() => {
+                    contentclick = false;
+                    console.log('content : ' + contentclick);
+                });
+
+                // 기본 포커스는 title 에 놓음
+                $('#title').focus();
+
+                // 만약 3곳에서 포커스가 모두 빠졌을 경우 뒤로가기(backspace) 방지
+                $(document).bind("keydown", function(e) {
+                    if (e.keyCode == 8 && !titleclick && !categoryclick && !contentclick) { // backspace 방지
+                        e.preventDefault();
+                    }
+                });
+            });
+        </script>
+    </main>
+</body>
+
+</html>
