@@ -25,10 +25,12 @@ function get_content($url)
 }
 date_default_timezone_set("Asia/Seoul");
 // 현재 날짜 받기
-$today = date("Ymd");
+// 여기만 바꾸면 날짜별로 가져올수 있음 : here!!
+$today = 20190129;
 
 // 목록에 있는 href 목록을 가져오기
 // 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
+// 여기를 바꾸면 다른 회사것을 가져올 수 있음 : here2!!
 $curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=' . ($today - 1));
 $localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html', 'w');
 fwrite($localfile, $curlfile);
@@ -88,8 +90,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
     $contentDB = "";
 
     // 제목
-    echo $titleDB = trim($html->find('div.news_headline h4', 0)->plaintext);
-    echo '<br>';
+    $titleDB = trim($html->find('div.news_headline h4', 0)->plaintext);
     // 기사입력일시
     $dateText = str_replace("기사입력 ","", trim($html->find('div.news_headline div.info span', 0)->plaintext));
 
@@ -99,17 +100,12 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
         $newsdate = substr($dateText,0,10);
         $newshour = substr($dateText,18,2) + 12;
         $newsmin = substr($dateText,20,3);
-        echo $dateDB = str_replace(".","-",$newsdate)." ".$newshour.$newsmin. ":00";
+        $dateDB = str_replace(".","-",$newsdate)." ".$newshour.$newsmin. ":00";
     }
-
-    echo '<br>';
     // 원본링크
-    echo $refurlDB = $html->find('div.news_headline div.info a.press_link', 0)->href;
-    echo '<br>';
+    $refurlDB = $html->find('div.news_headline div.info a.press_link', 0)->href;
     // 대표사진주소
-        echo $mainimgDB = $html->find('div.news_end img',0)->src;
-    
-    echo '<br>';
+    $mainimgDB = $html->find('div.news_end img',0)->src;
 
     //precontent 를 위한 부분
     $textcontent = "";
@@ -124,7 +120,8 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                 $contentDB = $contentDB.'<p align="center"><img style="width: 480px;height=auto" src="'.$v->getAttribute('lazy-src').'"></p>';
                 }
             } 
-            if(!strpos($contentDB,$value->plaintext)){
+            // 이미지 아래 설명 가져오기, 없는 경우 pass
+            if(!empty($value->plaintext) && !strpos($contentDB,$value->plaintext)){
                 $contentDB = $contentDB.'<p align="center">'.$value->find('figcaption',0)->plaintext.'</p><br>';
             }
         } elseif(sizeof($value->find('img'))) { // 만약 lazy-load 가 없는 그림이라면
@@ -134,7 +131,8 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                     $contentDB = $contentDB.'<p align="center"><img style="width: 480px;height=auto" src="'.$v->src.'"></p>';
                 }
             } 
-            if(!strpos($contentDB,$value->plaintext)){
+            // 이미지 아래 설명 가져오기, 없는 경우 pass
+            if(!empty($value->plaintext) && !strpos($contentDB,$value->plaintext)){
                 $contentDB = $contentDB.'<p align="center">'.$value->find('figcaption',0)->plaintext.'</p><br>';
             }
         } elseif (sizeof($value->find('figure iframe'))) { // 만약 동영상이라면
@@ -145,23 +143,20 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                 }
             } 
             // 동영상 설명은 1개이므로 1개를 가져오면 된다.
-            if(!strpos($contentDB,$value->plaintext)){
+            if(!empty($value->plaintext) && !strpos($contentDB,$value->plaintext)){
                 $contentDB = $contentDB.'<p align="center">'.$value->find('figcaption',0)->plaintext.'</p><br>';
             }
         } else {// 내용 텍스트라면
-            if($value->find('b',0)->plaintext && !strpos($contentDB,$value->plaintext)){
+            if(!empty($value->find('b',0)->plaintext) && !strpos($contentDB,$value->plaintext)){
                 $contentDB = $contentDB.'<p align="left"><b>'.$value->plaintext.'</b></p><br>';
                 $textcontent = $textcontent." ".$value->plaintext;
-            } elseif(!strpos($contentDB,$value->plaintext)){
+            } elseif(!empty($value->plaintext) && !strpos($contentDB,$value->plaintext)){
                 $contentDB = $contentDB.'<p align="left">'.$value->plaintext.'</p><br>';
                 $textcontent = $textcontent." ".$value->plaintext;
             }         
         }
     }
-    //precontent
-    echo $contentDB;
-    //precontent
-    echo $precontentDB = iconv_substr($textcontent,0,200, "utf-8");
+    $precontentDB = iconv_substr($textcontent,0,200, "utf-8");
 
     if($contentDB != "" && $precontentDB != "" && $mainimgDB != "") {
         $titleDB =str_replace("'", "\'", $titleDB);
@@ -191,11 +186,13 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
             // 쿼리문 실행 및 결과 출력
             $result = mysqli_query($conn, $sql);
             if ($result) {
-                echo "New record created successfully<br>";
+                echo "New record created successful<br>";
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 break;
             }
+    } else {
+        echo "data is null!<br>";
     }
     // php 메모리 부하가 올 수 있으므로 다 쓴 html 문서는 메모리에서 삭제시킨다.
     $html->clear();

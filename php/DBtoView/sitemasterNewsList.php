@@ -26,13 +26,13 @@ if (mysqli_num_rows($result_sql) > 0) {
 
         echo '<li class="collection-item avatar">
                 <img src="' . $row['mainimg'] . '" class="circle">
-                <span class="title">' . $row['title'] . '</span>
-                <p>' . $row['precontent'] . '
-                    <br> 조회수 : ' . $row['views'] . '
-                </p>
+                <span class="title">' . $row['title'] . '</span><br>
+                <p class="truncate">' . $row['reg_date'] . '
+                </p><br>
+                <p class="truncate">' . $row['precontent'] . '
+                </p><br>
 
                 <a href="/news/news_content.html?listidx=' . $row['listidx'] . '" class="waves-effect waves-light btn-small">글 본문 보기</a>
-                <a href="/news/news_content.html?listidx=' . $row['listidx'] . '#reply" class="waves-effect waves-light btn-small">댓글 확인</a>
                 <a href="/news/news_edit.html?listidx=' . $row['listidx'] . '" class="waves-effect waves-light btn-small">글 수정</a>
                 <button class="waves-effect waves-light btn-small" onClick="clickdelete(' . $row['listidx'] . ', \'' . $text . '\')">글 삭제</button>
                 <label class="secondary-content">
