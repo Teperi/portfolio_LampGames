@@ -7,10 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gettitle = str_replace("'", "\'", $gettitle);
     $getcontent = $_POST['content'];
     $getcontent = str_replace("'", "\'", $getcontent);
-    $precontent = iconv_substr($getcontent, 0, 60, "utf-8");
-    $precontent = str_replace("<div style=\"text-align: justify;\" align=\"justify\">", " ", $precontent);
-    $precontent = str_replace("<\/div>", " ", $precontent);
-    $precontent = str_replace("<br>", " ", $precontent);
+    $precontent = $_POST['precontent'];
+    $precontent = str_replace("'", "\'", $precontent);
     date_default_timezone_set('Asia/Seoul');
     $dateString = date("Y-m-d H:i:s", time());
 

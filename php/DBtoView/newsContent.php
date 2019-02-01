@@ -17,7 +17,7 @@ if (mysqli_num_rows($result_sql) > 0) {
     <main>
         <div class="parallax-container">
             <div class="parallax"><img src="' . $row['mainimg'] . '"></div>
-        </div>ㄴ
+        </div>
         <div class="section" id="top">
             <div class="row container">
                 <div class="col s12">
