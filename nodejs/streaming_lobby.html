@@ -31,7 +31,7 @@
             <div class="row">
                 <a href="video-streaming.html" class="waves-effect waves-light btn-large col s3 hoverable jua-font" style="font-size:large;">방송 시작하기</a>
             </div>
-            <div id='test' class="row"></div>
+            <div id='lobbylist' class="row"></div>
         </div>
 
         <footer include-html="shareHTML/footer.html"> </footer>
@@ -39,16 +39,15 @@
         <!-- HTML 공통 파일 포함 -->
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                var test = document.getElementById('test');
                 includeHTML();
-                var socket = io('/lobby');
-                socket.on('session_info', (data) => {
-                    console.log(data);
-                    console.log(data.nickName);
-                });
+                var lobbylist = document.getElementById('lobbylist');
+                var socket = io.connect('http://localhost:3001/lobby');
+                console.log(socket);
+                console.log(lobbylist);
+
 
                 socket.on('nothing', () => {
-                    test.innerHTML = '방송이 없습니다.';
+                    lobbylist.innerHTML = '방송이 없습니다.';
                 });
 
                 socket.on('stream', (data) => {
@@ -56,7 +55,8 @@
                         var a = document.createElement("a");
                         a.classList.add("col");
                         a.classList.add("s3");
-                        a.href = 'video-viewer.html?id=' + data[element].id;
+                        a.href = 'video-viewer.html?id=' + data[element].sessionid;
+                        console.log(data[element]);
                         var c = document.createElement("div");
                         c.classList.add("card");
                         c.classList.add("hoverable");
@@ -68,7 +68,7 @@
                         c.appendChild(d);
                         a.appendChild(c);
 
-                        test.appendChild(a);
+                        lobbylist.appendChild(a);
                     });
                 });
             });

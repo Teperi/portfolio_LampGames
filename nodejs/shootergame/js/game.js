@@ -192,7 +192,7 @@ var Game = new Phaser.Class({
 
 
         // 소켓을 설정함
-        this.socket = io('/game');
+        this.socket = io('http://localhost:8080/');
 
         // 내가 접속해서 만들어지는 정보 보내기
         this.socket.emit('new-player', {

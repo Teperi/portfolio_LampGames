@@ -26,7 +26,7 @@ function get_content($url)
 date_default_timezone_set("Asia/Seoul");
 // 현재 날짜 받기
 // 여기만 바꾸면 날짜별로 가져올수 있음 : here!!
-$today = 20190129;
+$today = date("Ymd");
 
 // 목록에 있는 href 목록을 가져오기
 // 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
@@ -117,7 +117,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                 if(!strpos($contentDB,$v->getAttribute('lazy-src'))){
                 // 갯수만큼 가져오는데, src 를 가져올 경우 네이버 서버 내에서 가져오므로 가져올 수 없다
                 // 따라서 lazy-src 를 가져온다
-                $contentDB = $contentDB.'<p align="center"><img style="width: 480px;height=auto" src="'.$v->getAttribute('lazy-src').'"></p>';
+                $contentDB = $contentDB.'<p align="center"><img class="materialboxed" width="480" src="'.$v->getAttribute('lazy-src').'"></p>';
                 }
             } 
             // 이미지 아래 설명 가져오기, 없는 경우 pass
@@ -128,7 +128,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
             foreach ($value->find('img') as $v) {
                 if(!strpos($contentDB,$v->src)){
                     // src 를 그대로 가져온다
-                    $contentDB = $contentDB.'<p align="center"><img style="width: 480px;height=auto" src="'.$v->src.'"></p>';
+                    $contentDB = $contentDB.'<p align="center"><img class="materialboxed" width="480" src="'.$v->src.'"></p>';
                 }
             } 
             // 이미지 아래 설명 가져오기, 없는 경우 pass
