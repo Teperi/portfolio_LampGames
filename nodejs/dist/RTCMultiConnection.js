@@ -161,10 +161,10 @@ var RTCMultiConnection = function(roomid, forceOptions) {
             connection.socketURL = '/';
         }
 
-        if (connection.socketURL.substr(connection.socketURL.length - 1, 1) != '/') {
-            // connection.socketURL = 'https://domain.com:9001/';
-            throw '"socketURL" MUST end with a slash.';
-        }
+        // if (connection.socketURL.substr(connection.socketURL.length - 1, 1) != '/') {
+        //     // connection.socketURL = 'https://domain.com:9001/';
+        //     throw '"socketURL" MUST end with a slash.';
+        // }
 
         if (connection.enableLogs) {
             if (connection.socketURL == '/') {
@@ -175,7 +175,7 @@ var RTCMultiConnection = function(roomid, forceOptions) {
         }
 
         try {
-            connection.socket = io(connection.socketURL + parameters);
+            connection.socket = io.connect(connection.socketURL + parameters);
         } catch (e) {
             connection.socket = io.connect(connection.socketURL + parameters, connection.socketOptions);
         }

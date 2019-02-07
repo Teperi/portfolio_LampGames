@@ -2,11 +2,12 @@ var express = require('express'); // Express contains some boilerplate to for ro
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
+var bodyParser = require('body-parser');
 
-const RTCMultiConnectionServer = require('rtcmulticonnection-server');
-const path = require('path');
 const port = process.env.PORT || 3000;
 
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(bodyParser.json()); // support json encoded bodies
 
 app.set('port', port);
 http.listen(app.get('port'), function() {
@@ -14,7 +15,16 @@ http.listen(app.get('port'), function() {
 });
 
 // 최상위 경로 설정
-app.use('/', express.static(__dirname));
+// app.set('/', express.static(__dirname));
+
+
+
+app.post('/streaming_lobby', function(req, res) {
+    var id = req.body.user_id;
+    var nick = req.body.nickName;
+    console.log(id);
+    res.send('test :' + id + '.' + nick);
+});
 
 io.of('/chatting').on('connection', function(socket) {
     socket.on('disconnect', function() {

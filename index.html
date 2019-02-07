@@ -97,12 +97,12 @@
                 <h1>Streaming</h1>
             </blockquote>
             <div class="row">
-                <a href="//localhost:3000/streaming_lobby.html" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">더보기</a>
-                <!-- <form action="//localhost:3000/streaming_lobby.html" method="post">
-                    <input name="user_id" type="hidden" value=<?php if($_SESSION) {echo $_SESSION[ "user_id"];} ?>>
-                    <input name="nickName" type="hidden" value=<?php if($_SESSION) {echo $_SESSION[ "nickName"];} ?>>
-                    <button type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">더보기</button>
-                </form> -->
+                <!-- <a id="streaming_more" href="//localhost:3000/streaming_lobby.html" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">입장</a> -->
+                <form action="//localhost:3000/streaming_lobby" method="post">
+                    <input name="user_id" id="user_id" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "user_id"];} ?>>
+                    <input name="nickName" id="nickName" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "nickName"];} ?>>
+                    <button id="streaming_more" type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;" onclick="return btnClick();">입장</button>
+                </form>
             </div>
 
             <blockquote class="dohyeon-font">
@@ -121,7 +121,19 @@
 
         <!-- HTML 공통 파일 포함 -->
         <script>
-            includeHTML();
+            document.addEventListener('DOMContentLoaded', function() {
+                includeHTML();
+                var test = '<?= empty($_SESSION[ "user_id"])?>';
+
+                function btnClick() {
+                    if (test == 1) {
+                        alert('로그인 하셔야 입장 가능합니다.');
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            })
         </script>
     </main>
 </body>

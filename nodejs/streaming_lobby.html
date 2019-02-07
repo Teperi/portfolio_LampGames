@@ -41,34 +41,42 @@
             document.addEventListener('DOMContentLoaded', () => {
                 includeHTML();
                 var lobbylist = document.getElementById('lobbylist');
-                var socket = io.connect('http://localhost:3001/lobby');
+                var socket = io.connect("http://localhost:3001/lobby");
                 console.log(socket);
-                console.log(lobbylist);
-
 
                 socket.on('nothing', () => {
                     lobbylist.innerHTML = '방송이 없습니다.';
                 });
 
-                socket.on('stream', (data) => {
+                socket.on('stream_room', (data) => {
                     Object.keys(data).forEach(element => {
-                        var a = document.createElement("a");
-                        a.classList.add("col");
-                        a.classList.add("s3");
-                        a.href = 'video-viewer.html?id=' + data[element].sessionid;
-                        console.log(data[element]);
-                        var c = document.createElement("div");
-                        c.classList.add("card");
-                        c.classList.add("hoverable");
-                        var d = document.createElement("div");
-                        d.classList.add("card-content");
-                        d.classList.add("truncate");
-                        d.classList.add("black-text");
-                        d.innerHTML = data[element].title;
-                        c.appendChild(d);
-                        a.appendChild(c);
+                        lobbylist.innerHTML = "";
+                        var atag = document.createElement("a");
+                        atag.classList.add("col");
+                        atag.classList.add("s12");
+                        atag.href = 'video-viewer.html?id=' + data[element].sessionid;
+                        var carddiv = document.createElement("div");
+                        carddiv.classList.add("card");
+                        carddiv.classList.add("hoverable");
+                        var cardcontentdiv = document.createElement("div");
+                        cardcontentdiv.classList.add("card-content");
+                        var cardtitletext = document.createElement("div");
+                        cardtitletext.classList.add("card-title");
+                        cardtitletext.classList.add("black-text");
+                        cardtitletext.classList.add("dohyeon-font");
+                        cardtitletext.innerHTML = data[element].title;
+                        var cardcontenttext = document.createElement("p");
+                        cardcontenttext.classList.add("truncate");
+                        cardcontenttext.classList.add("black-text");
+                        cardcontenttext.classList.add("right-align");
+                        cardcontenttext.innerHTML = "시청자 수 : " + data[element].watchcount;
 
-                        lobbylist.appendChild(a);
+                        cardcontentdiv.appendChild(cardtitletext);
+                        cardcontentdiv.appendChild(cardcontenttext);
+                        carddiv.appendChild(cardcontentdiv);
+                        atag.appendChild(carddiv);
+
+                        lobbylist.appendChild(atag);
                     });
                 });
             });

@@ -278,8 +278,8 @@ var Game = new Phaser.Class({
             self.socket.emit('shootBullet', {
                 x: player.x + (bullet_x * 30),
                 y: player.y + (bullet_y * 30),
-                speed_x: bullet_x * 10,
-                speed_y: bullet_y * 10
+                speed_x: bullet_x * 5,
+                speed_y: bullet_y * 5,
             });
 
             // // 과거 1인용 게임 전용으로 만들 경우

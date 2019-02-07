@@ -15,31 +15,20 @@
                     </a>
                 </li>
             </ul>
+
+            <ul class="right hide-on-med-and-down">
+                <?php 
+                    if(isset($_SESSION['user_id'])){
+                        if($_SESSION['user_id'] == 'admin'){
+                            echo '<li><a href="/userinfo/sitemaster.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
+                        } else {
+                            echo '<li><a href="/userinfo/myinfo.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
+                        } 
+                    } else { echo '<li><a href="/login.html"><i class="material-icons grey-text text-darken-4">person</i></a></li>'; } ?>
+            </ul>
         </div>
 
-        <ul class="right hide-on-med-and-down">
-            <?php 
-            if(isset($_SESSION['user_id'])){
-                if($_SESSION['user_id'] == 'admin'){
-                    echo '<li><a href="/userinfo/sitemaster.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
-                } else {
-                    echo '<li><a href="/userinfo/myinfo.html" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i>' . $_SESSION['nickName'] . ' 님</a></li>'; 
-                } 
-            } else { echo '<li><a href="/login.html"><i class="material-icons grey-text text-darken-4">person</i></a></li>'; } ?>
 
-            <li style="height:64px;">
-                <form>
-                    <div class="input-field">
-                        <input id="search" type="search" required>
-                        <label class="label-icon" for="search">
-                                            <i class="material-icons grey-text text-darken-4">search</i>
-                                        </label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </form>
-            </li>
-
-        </ul>
 
     </div>
 

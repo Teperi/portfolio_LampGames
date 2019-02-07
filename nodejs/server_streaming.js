@@ -17,6 +17,7 @@ http.listen(app.get('port'), function() {
 // socket.io codes goes below
 
 
+
 var streaming = io;
 
 var streamingRoom = {};
@@ -24,6 +25,7 @@ var streamingRoom = {};
 streaming.on('connection', function(socket) {
     // ----------------------
     // below code is optional
+
     RTCMultiConnectionServer.addSocket(socket);
 
     const params = socket.handshake.query;
@@ -42,17 +44,17 @@ streaming.on('connection', function(socket) {
             streaming.emit('viewer', streamingRoom[params.sessionid]);
         }
     }
+
     if (!params.socketCustomEvent) {
         params.socketCustomEvent = 'custom-message';
     }
-
 
     socket.on('disconnect-with', (data) => {
         if (data in streamingRoom) {
             //방송 삭제
             delete streamingRoom[data];
         } else {
-            console.log("시청자");
+            streamingRoom[params.sessionid].watchcount--;
         }
     });
 
@@ -60,17 +62,14 @@ streaming.on('connection', function(socket) {
         socket.broadcast.emit(params.socketCustomEvent, message);
     });
 
-    //sessionid 가 방 제목으로 가면 될듯.
-    // auto open or join 버튼을 사용 안하는 방향으로 준비.
 });
 
-var lobby = io.of('/lobby');
+var lobby = io.of('lobby');
 
 lobby.on('connection', (socket) => {
-    socket.emit('test');
     if (Object.keys(streamingRoom).length <= 0) {
-        socket.broadcast.emit('nothing');
+        socket.emit('nothing');
     } else {
-        socket.broadcast.emit('stream', streamingRoom);
+        socket.emit('stream_room', streamingRoom);
     }
 });

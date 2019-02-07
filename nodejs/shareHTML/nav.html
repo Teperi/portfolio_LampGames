@@ -1,5 +1,4 @@
 <nav>
-    <?php session_start();?>
     <div class="nav-wrapper yellow lighten-2 dohyeon-font">
         <!-- 로고 부분 -->
         <a href="//localhost/index.html" class="brand-logo center grey-text text-darken-4">
@@ -15,24 +14,13 @@
                     </a>
                 </li>
             </ul>
+
+            <ul class="right hide-on-med-and-down">
+                <li><a href="//localhost/userinfo/myinfo.html" id="nickname" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i></a></li>';
+            </ul>
         </div>
-
-        <ul class="right hide-on-med-and-down">
-            <li><a href="//localhost/userinfo/myinfo.html" id="nickname" class="grey-text text-darken-4"><i class="material-icons left grey-text text-darken-4">person</i></a></li>';
-
-            <li style="height:64px;">
-                <form>
-                    <div class="input-field">
-                        <input id="search" type="search" required>
-                        <label class="label-icon" for="search">
-                                            <i class="material-icons grey-text text-darken-4">search</i>
-                                        </label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </form>
-            </li>
-
-        </ul>
-
     </div>
 </nav>
+<script>
+    var nickname = document.getElementById('nickname');
+</script>
