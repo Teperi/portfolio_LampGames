@@ -31,8 +31,8 @@ $today = date("Ymd");
 // 목록에 있는 href 목록을 가져오기
 // 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
 // 여기를 바꾸면 다른 회사것을 가져올 수 있음 : here2!!
-$curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=356&date=' . ($today - 1));
-$localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html', 'w');
+$curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=439&date=' . ($today - 1));
+$localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list_tig.html', 'w');
 fwrite($localfile, $curlfile);
 fclose($localfile);
 
@@ -40,7 +40,7 @@ fclose($localfile);
 // 완전히 저장 된 후 아래 작업 시작을 위해 sleep 적용
 sleep(1);
 // html 파일을 simple dom parser 를 사용해서 a 태그 안의 href 만 가져옴
-$html = file_get_html($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list.html');
+$html = file_get_html($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list_tig.html');
 $linklist;
 foreach ($html->find('div.list_body li a') as $value) {
     $linklist[] = $value->href;
@@ -61,7 +61,7 @@ foreach (array_unique($linklist) as $value) {
 
 // 3. 주소에 따라 뉴스 내용 html 로 저장하기
 // 데이터가 저장될 경로 설정
-$folder = $_SERVER["DOCUMENT_ROOT"] . '/savenews/gm/' . ($today - 1);
+$folder = $_SERVER["DOCUMENT_ROOT"] . '/savenews/tig/' . ($today - 1);
 
 // 위에서 가져온 뉴스 URL 을 크롤링해서 서버에 직접 저장
 for ($i = 0; $i < sizeof($newsUrlList); $i++) {
@@ -84,7 +84,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
     $titleDB ="";
     $mainimgDB = "";
     $dateDB = "";
-    $refDB = "게임메카";
+    $refDB = "디스이즈게임";
     $refurlDB = "";
     $precontentDB = "";
     $contentDB = "";
@@ -160,7 +160,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
 
     if($contentDB != "" && $precontentDB != "" && $mainimgDB != "") {
         $titleDB =str_replace("'", "\'", $titleDB);
-        $refDB = "게임메카";
+        $refDB = "디스이즈게임";
         $precontentDB = str_replace("'", "\'", $precontentDB);
         $contentDB = str_replace("'", "\'", $contentDB);
     

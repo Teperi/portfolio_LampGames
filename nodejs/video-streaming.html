@@ -56,15 +56,22 @@
                 <label for="roomtitle">방송 제목</label>
             </div>
             <button id="open-room" class="waves-effect waves-light btn col s3" style="margin-top: 20px">방송 시작하기</button>
+
         </div>
         <div class="row">
-            <div id="videos-container" class="col s9"></div>
+            <div id="videos-container" class="col s9 center"></div>
+
+
             <div id="chatroom" class="col s3">
-                <ul id="messages"></ul>
+                <ul id="messages" class="col s12" style="overflow-y: scroll; height:440px;"></ul>
+                <form id="chatform" action="" class="col s12">
+                    <input id="m" class="col s8" autocomplete="off" /><button class="waves-effect waves-light btn col s4">Send</button>
+                </form>
+
             </div>
         </div>
         <div class="row">
-            <button id="close-room" class="waves-effect waves-light btn col s3 offset-s9 disabled" style="margin-top: 20px">방송 종료하기</button>
+            <button id="close-room" class="waves-effect waves-light btn col s12 disabled" style="margin-top: 20px">방송 종료하기</button>
         </div>
     </div>
 
@@ -96,7 +103,9 @@
 
         $(document).ready(() => {
             var titlefocus = false;
+            var chatfocus = false;
             var titleinput = document.getElementById('roomtitle');
+            var chatinput = document.getElementById('m');
             $('#roomtitle').focus(() => {
                 titlefocus = true;
                 console.log(titlefocus);
@@ -105,9 +114,17 @@
                 titlefocus = false;
                 console.log(titlefocus);
             });
+            $('#m').focus(() => {
+                chatinput = true;
+                console.log(titlefocus);
+            });
+            $('#m').blur(() => {
+                chatinput = false;
+                console.log(titlefocus);
+            });
 
             $(document).bind("keydown", function(e) {
-                if (e.keyCode == 8 && !titlefocus) { // backspace 방지
+                if (e.keyCode == 8 && !titlefocus && !chatinput) { // backspace 방지
                     e.preventDefault();
                 }
             });
@@ -135,13 +152,17 @@
                         var socket22 = io('/chatting');
                         console.log(socket22);
 
-                        // $('form').submit(function(e) {
-                        //     e.preventDefault(); // prevents page reloading
-                        //     // m에 들어간 값을 chat message 로 넘겨줌
-                        //     socket.emit('chat message', $('#m').val());
-                        //     $('#m').val('');
-                        //     return false;
-                        // });
+                        function chatclick() {
+
+                        }
+
+                        $('#chatform').submit(function(e) {
+                            e.preventDefault(); // prevents page reloading
+                            // m에 들어간 값을 chat message 로 넘겨줌
+                            socket22.emit('chat message', getCookie('id') + ' : ' + $('#m').val());
+                            $('#m').val('');
+                            return false;
+                        });
                         // 뿌려져 받은 메시지를 내 화면에 출력
                         socket22.on('chat message', function(msg) {
                             console.log(msg);
@@ -405,6 +426,64 @@
     <script src="https://cdn.webrtc-experiment.com/common.js"></script>
     <script>
         includeHTML();
+    </script>
+    <script>
+        var getCookie = function(name) {
+            var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+            return value ? value[2] : null;
+        };
+        $(document).ready(function() {
+            var userinfo = document.getElementById('userinfo');
+            console.log(document.getElementById('userinfo'));
+            if (getCookie('id') == 'admin') {
+                var infoatag = document.createElement("a");
+                infoatag.classList.add("grey-text");
+                infoatag.classList.add("text-darken-4");
+                infoatag.setAttribute('href', '//localhost/userinfo/sitemaster.html');
+                infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
+
+                var infoitag = document.createElement("i");
+                infoitag.classList.add("material-icons");
+                infoitag.classList.add("left");
+                infoitag.classList.add("grey-text");
+                infoitag.classList.add("text-darken-4");
+                infoitag.innerHTML = 'person';
+
+                infoatag.appendChild(infoitag);
+                userinfo.appendChild(infoatag);
+
+            } else if (getCookie('id').length == 0) {
+                var infoatag = document.createElement("a");
+                infoatag.classList.add("grey-text");
+                infoatag.classList.add("text-darken-4");
+                infoatag.setAttribute('href', '//localhost/login.html');
+
+                var infoitag = document.createElement("i");
+                infoitag.classList.add("material-icons");
+                infoitag.classList.add("left");
+                infoitag.classList.add("grey-text");
+                infoitag.classList.add("text-darken-4");
+                infoitag.innerHTML = 'person';
+                infoatag.appendChild(infoitag);
+                userinfo.appendChild(infoatag);
+            } else {
+                var infoatag = document.createElement("a");
+                infoatag.classList.add("grey-text");
+                infoatag.classList.add("text-darken-4");
+                infoatag.setAttribute('href', '//localhost/userinfo/myinfo.html');
+                infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
+
+                var infoitag = document.createElement("i");
+                infoitag.classList.add("material-icons");
+                infoitag.classList.add("left");
+                infoitag.classList.add("grey-text");
+                infoitag.classList.add("text-darken-4");
+                infoitag.innerHTML = 'person';
+
+                infoatag.appendChild(infoitag);
+                userinfo.appendChild(infoatag);
+            }
+        })
     </script>
 </body>
 

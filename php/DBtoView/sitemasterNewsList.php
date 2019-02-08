@@ -15,7 +15,7 @@ $result_sql = mysqli_query($conn, $query);
 if (mysqli_num_rows($result_sql) > 0) {
     while ($row = $result_sql->fetch_assoc()) {
         $categoryColor;
-        if ($row['ref'] == '루리웹') {
+        if ($row['ref'] == '게임메카') {
             $categoryColor = 'blue';
         } else {
             $categoryColor = 'purple';

@@ -6,16 +6,12 @@ if (isset($_COOKIE[session_name()])) {
 }
 ?>
 
-<!-- TODO: nav 페이지 집어넣기 -->
-
-
 <head>
     <meta charset="utf-8" />
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Material 아이콘 사용하기 위한 용도 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,11 +25,8 @@ if (isset($_COOKIE[session_name()])) {
 <body class="yellow lighten-2">
     <div class="container">
         <div class="valign-wrapper row login-box">
-
             <div class="card hoverable col s10 pull-s1 m8 pull-m2 l6 pull-l3 ">
-
                 <form method="POST" action="/php/loginDB.php">
-
                     <div class="card-content">
                         <span class="card-title center dohyeon-font">로그인</span>
                         <div class="row">
@@ -70,9 +63,7 @@ if (isset($_COOKIE[session_name()])) {
                             </p>
                         </div>
                     </div>
-
                 </form>
-
             </div>
         </div>
     </div>

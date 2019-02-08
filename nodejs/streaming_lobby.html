@@ -16,9 +16,10 @@
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
-    <script src="./shareHTML/includeHTML.js"></script>
-    <script src="./js/materializecss.js"></script>
+    <script src="/shareHTML/includeHTML.js"></script>
+    <script src="/js/materializecss.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -38,8 +39,11 @@
 
         <!-- HTML 공통 파일 포함 -->
         <script>
+            includeHTML();
+        </script>
+        <script>
             document.addEventListener('DOMContentLoaded', () => {
-                includeHTML();
+
                 var lobbylist = document.getElementById('lobbylist');
                 var socket = io.connect("http://localhost:3001/lobby");
                 console.log(socket);
@@ -72,17 +76,76 @@
                         cardcontenttext.innerHTML = "시청자 수 : " + data[element].watchcount;
 
                         cardcontentdiv.appendChild(cardtitletext);
-                        cardcontentdiv.appendChild(cardcontenttext);
+                        // cardcontentdiv.appendChild(cardcontenttext);
                         carddiv.appendChild(cardcontentdiv);
                         atag.appendChild(carddiv);
 
                         lobbylist.appendChild(atag);
                     });
                 });
+
+
             });
         </script>
 
+        <script>
+            var getCookie = function(name) {
+                var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+                return value ? value[2] : null;
+            };
+            $(document).ready(function() {
+                var userinfo = document.getElementById('userinfo');
+                console.log(document.getElementById('userinfo'));
+                if (getCookie('id') == 'admin') {
+                    var infoatag = document.createElement("a");
+                    infoatag.classList.add("grey-text");
+                    infoatag.classList.add("text-darken-4");
+                    infoatag.setAttribute('href', '//localhost/userinfo/sitemaster.html');
+                    infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
 
+                    var infoitag = document.createElement("i");
+                    infoitag.classList.add("material-icons");
+                    infoitag.classList.add("left");
+                    infoitag.classList.add("grey-text");
+                    infoitag.classList.add("text-darken-4");
+                    infoitag.innerHTML = 'person';
+
+                    infoatag.appendChild(infoitag);
+                    userinfo.appendChild(infoatag);
+
+                } else if (getCookie('id').length == 0) {
+                    var infoatag = document.createElement("a");
+                    infoatag.classList.add("grey-text");
+                    infoatag.classList.add("text-darken-4");
+                    infoatag.setAttribute('href', '//localhost/login.html');
+
+                    var infoitag = document.createElement("i");
+                    infoitag.classList.add("material-icons");
+                    infoitag.classList.add("left");
+                    infoitag.classList.add("grey-text");
+                    infoitag.classList.add("text-darken-4");
+                    infoitag.innerHTML = 'person';
+                    infoatag.appendChild(infoitag);
+                    userinfo.appendChild(infoatag);
+                } else {
+                    var infoatag = document.createElement("a");
+                    infoatag.classList.add("grey-text");
+                    infoatag.classList.add("text-darken-4");
+                    infoatag.setAttribute('href', '//localhost/userinfo/myinfo.html');
+                    infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
+
+                    var infoitag = document.createElement("i");
+                    infoitag.classList.add("material-icons");
+                    infoitag.classList.add("left");
+                    infoitag.classList.add("grey-text");
+                    infoitag.classList.add("text-darken-4");
+                    infoitag.innerHTML = 'person';
+
+                    infoatag.appendChild(infoitag);
+                    userinfo.appendChild(infoatag);
+                }
+            });
+        </script>
     </main>
 </body>
 

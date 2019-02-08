@@ -3,11 +3,13 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io').listen(http);
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(bodyParser.json()); // support json encoded bodies
+app.use(cookieParser());
 
 app.set('port', port);
 http.listen(app.get('port'), function() {
@@ -15,16 +17,14 @@ http.listen(app.get('port'), function() {
 });
 
 // 최상위 경로 설정
-// app.set('/', express.static(__dirname));
+app.use('/', express.static(__dirname));
 
 var streaming_connect = {};
 
 app.post('/streaming_lobby', function(req, res) {
-    streaming_connect[req.body.user_id] = {
-        id: req.body.user_id,
-        nick: req.body.nickName
-    }
-    res.sendFile('streaming_lobby.html');
+    res.cookie('id', req.body.user_id);
+    res.cookie('nick', req.body.nickName);
+    res.sendFile('streaming_lobby.html', { root: __dirname });
 });
 
 io.of('/chatting').on('connection', function(socket) {

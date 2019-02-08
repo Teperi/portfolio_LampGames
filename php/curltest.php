@@ -1,4 +1,10 @@
 <?php
+
+// 
+// 이 파일은 더 이상 사용하지 않음
+// 과거 기록을 위해 남겨놓기로 함
+// 
+
 include $_SERVER["DOCUMENT_ROOT"] . '/php/simplehtmldom/simple_html_dom.php';
 
 function get_content($url)
@@ -39,7 +45,6 @@ function newstoserver($list)
         // 원문기사 주소 가져오기
         preg_match_all("/<a target=\"_blank\" href=\"(.+)\" class=\"press_link\">/", $getnews, $refurl);
         // 기사 내용 가져오기
-        // TODO: 사진을 가져올 때 제대로 띄울 수 있도록 수정해야 함
         preg_match_all("/(<div style=\".+\">.*<\/div>)/", $getnews, $content_raw);
         $content = str_replace("'", "\'", $content_raw[1][0]);
         // 기사 미리보기 내용 가져오기

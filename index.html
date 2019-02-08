@@ -120,19 +120,22 @@
 
         <!-- HTML 공통 파일 포함 -->
         <script>
+            var id
             document.addEventListener('DOMContentLoaded', function() {
                 includeHTML();
-                var test = '<?= empty($_SESSION[ "user_id"])?>';
+                id = document.getElementById('user_id');
 
-                function btnClick() {
-                    if (test == 1) {
-                        alert('로그인 하셔야 입장 가능합니다.');
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
+
             })
+
+            function btnClick() {
+                if (id.value.length == 0) {
+                    alert("로그인을 하셔야 입장할 수 있습니다.");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
         </script>
     </main>
 </body>
