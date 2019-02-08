@@ -17,13 +17,14 @@ http.listen(app.get('port'), function() {
 // 최상위 경로 설정
 // app.set('/', express.static(__dirname));
 
-
+var streaming_connect = {};
 
 app.post('/streaming_lobby', function(req, res) {
-    var id = req.body.user_id;
-    var nick = req.body.nickName;
-    console.log(id);
-    res.send('test :' + id + '.' + nick);
+    streaming_connect[req.body.user_id] = {
+        id: req.body.user_id,
+        nick: req.body.nickName
+    }
+    res.sendFile('streaming_lobby.html');
 });
 
 io.of('/chatting').on('connection', function(socket) {

@@ -28,17 +28,27 @@
         <nav include-html="/shareHTML/nav.html"> </nav>
     </header>
     <main>
-        <!-- <div class="parallax-container">
-                <div class="parallax"><img src="images/gowtestimage.jpg"></div>
-            </div> -->
+        <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html"></ul>
         <div class="container">
-            <p>내 정보</p>
-            <p>id :
-                <?php echo $_SESSION['user_id']; ?>
-            </p>
-            <p>닉네임 :
-                <?php echo $_SESSION['nickName']; ?>
-            </p>
+            <blockquote class="dohyeon-font">
+                <h1>My Info</h1>
+            </blockquote>
+
+            <div class="col s12">
+                <ul class="collection with-header" id="newsList">
+                    <li class="collection-header">
+                        <p>
+                            <a class="waves-effect waves-light btn right" href="/login.html">로그아웃</a>
+                            <h5 class="dohyeon-font">ID :
+                                <?php echo $_SESSION['user_id']; ?>
+                            </h5>
+                            <h5 class="dohyeon-font">닉네임 :
+                                <?php echo $_SESSION['nickName']; ?>
+                            </h5>
+                        </p>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <footer include-html="/shareHTML/footer.html"> </footer>

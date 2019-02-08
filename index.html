@@ -38,72 +38,61 @@
                 <h1>Play Games</h1>
             </blockquote>
             <div class="row">
-                <div class="col s12">
-                    <div class="col s12 m6 l3">
-                        <a href="/games/rpstest/rockpaperscissors.html">
-                            <div class="card hoverable">
-                                <div class="card-image cardVerticalImgDiv">
-                                    <img class="cardVerticalImg" src="/images/rockpaperscissors.png">
-                                </div>
-                                <div class="card-content">
-                                    <span class="card-title dohyeon-font black-text truncate">가위바위보</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
 
-                    <div class="col s12 m6 l3">
-                        <a href="/games/Breakout/breakout.html">
-                            <div class="card hoverable">
-                                <div class="card-image cardVerticalImgDiv">
-                                    <img class="cardVerticalImg" src="/images/mdn-breakout-gameplay.png">
-                                </div>
-                                <div class="card-content">
-                                    <span class="card-title dohyeon-font black-text truncate">벽돌깨기</span>
-                                </div>
+                <div class="col s12 m6 l3">
+                    <a href="/games/rpstest/rockpaperscissors.html">
+                        <div class="card hoverable">
+                            <div class="card-image cardVerticalImgDiv">
+                                <img class="cardVerticalImg" src="/images/rockpaperscissors.png">
                             </div>
-                        </a>
-                    </div>
-
-                    <div class="col s12 m6 l3">
-                        <a href="/games/phaser_ex1/phaser_tutorial.html">
-                            <div class="card hoverable">
-                                <div class="card-image cardVerticalImgDiv">
-                                    <img class="cardVerticalImg" src="/images/tutorial_header.png">
-                                </div>
-                                <div class="card-content">
-                                    <span class="card-title dohyeon-font black-text truncate">Phaser</span>
-                                </div>
+                            <div class="card-content">
+                                <span class="card-title dohyeon-font black-text truncate">가위바위보</span>
                             </div>
-                        </a>
-                    </div>
-
-                    <div class="col s12 m6 l3">
-                        <a href="http://localhost:3000/shootergame/shooter.html">
-                            <div class="card hoverable">
-                                <div class="card-image cardVerticalImgDiv">
-                                    <img class="cardVerticalImg" src="/images/tankgame.png">
-                                </div>
-                                <div class="card-content">
-                                    <span class="card-title dohyeon-font black-text truncate">Multi Game</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+
+                <div class="col s12 m6 l3">
+                    <a href="/games/Breakout/breakout.html">
+                        <div class="card hoverable">
+                            <div class="card-image cardVerticalImgDiv">
+                                <img class="cardVerticalImg" src="/images/mdn-breakout-gameplay.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title dohyeon-font black-text truncate">벽돌깨기</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <a href="/games/phaser_ex1/phaser_tutorial.html">
+                        <div class="card hoverable">
+                            <div class="card-image cardVerticalImgDiv">
+                                <img class="cardVerticalImg" src="/images/tutorial_header.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title dohyeon-font black-text truncate">Phaser</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col s12 m6 l3">
+                    <a href="http://localhost:3000/shootergame/shooter.html">
+                        <div class="card hoverable">
+                            <div class="card-image cardVerticalImgDiv">
+                                <img class="cardVerticalImg" src="/images/tankgame.png">
+                            </div>
+                            <div class="card-content">
+                                <span class="card-title dohyeon-font black-text truncate">Multi Game</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
             </div>
 
-            <blockquote class="dohyeon-font">
-                <h1>Streaming</h1>
-            </blockquote>
-            <div class="row">
-                <!-- <a id="streaming_more" href="//localhost:3000/streaming_lobby.html" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;">입장</a> -->
-                <form action="//localhost:3000/streaming_lobby" method="post">
-                    <input name="user_id" id="user_id" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "user_id"];} ?>>
-                    <input name="nickName" id="nickName" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "nickName"];} ?>>
-                    <button id="streaming_more" type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;" onclick="return btnClick();">입장</button>
-                </form>
-            </div>
 
             <blockquote class="dohyeon-font">
                 <h2>Game News</h2>
@@ -115,6 +104,16 @@
                 <a class="waves-effect waves-light btn-large col s12 hoverable jua-font" href="/news/news.html" style="font-size:large;">더보기</a>
             </div>
 
+            <blockquote class="dohyeon-font">
+                <h1>Streaming</h1>
+            </blockquote>
+            <div class="row">
+                <form action="//localhost:3000/streaming_lobby" method="post">
+                    <input name="user_id" type="hidden" id="user_id" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "user_id"];} ?>>
+                    <input name="nickName" type="hidden" id="nickName" value=<?php if(!empty($_SESSION[ "user_id"])) {echo $_SESSION[ "nickName"];} ?>>
+                    <button id="streaming_more" type="submit" class="waves-effect waves-light btn-large col s12 hoverable jua-font" style="font-size:large;" onclick="return btnClick();">입장</button>
+                </form>
+            </div>
         </div>
 
         <footer include-html="/shareHTML/footer.html"> </footer>

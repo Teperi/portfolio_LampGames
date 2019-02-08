@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.1/dist/phaser.min.js"></script>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Material 아이콘 사용하기 위한 용도 -->
@@ -24,10 +24,11 @@
 
 <body>
     <header include-html="/shareHTML/nav.html"></header>
-    <div class="container">
-        <div class="row"></div>
-        <div id="game-view" class="row center"></div>
-    </div>
+    <ul id="slide-out" class="sidenav" include-html="/shareHTML/sidebar.html"></ul>
+
+    <div class="row"></div>
+    <div id="game-view" class="row center"></div>
+
 
     <script type="text/javascript">
         var config = {
