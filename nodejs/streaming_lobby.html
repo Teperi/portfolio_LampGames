@@ -1,152 +1,158 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
     <!-- Material 아이콘 사용하기 위한 용도 -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Lamp Games - news & Play Games!!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- 개인용 css 파일 -->
     <link rel="stylesheet" type="text/css" media="screen" href="/main.css" />
     <!-- html 각각 관리(navbar, footer 등) -->
     <script src="/shareHTML/includeHTML.js"></script>
     <script src="/js/materializecss.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA=" crossorigin="anonymous"></script>
-</head>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.js"
+      integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<body>
-    <header include-html="shareHTML/nav.html"> </header>
+  <body>
+    <header include-html="shareHTML/nav.php"></header>
     <main>
-
-        <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.html"></ul>
-        <div class="container">
-            <div class="row"></div>
-            <div class="row">
-                <a href="video-streaming.html" class="waves-effect waves-light btn-large col s3 hoverable jua-font" style="font-size:large;">방송 시작하기</a>
-            </div>
-            <div id='lobbylist' class="row"></div>
+      <ul id="slide-out" class="sidenav" include-html="shareHTML/sidebar.php"></ul>
+      <div class="container">
+        <div class="row"></div>
+        <div class="row">
+          <a
+            href="video-streaming.html"
+            class="waves-effect waves-light btn-large col s3 hoverable jua-font"
+            style="font-size:large;"
+          >
+            방송 시작하기
+          </a>
         </div>
+        <div id="lobbylist" class="row"></div>
+      </div>
 
-        <footer include-html="shareHTML/footer.html"> </footer>
+      <footer include-html="shareHTML/footer.html"></footer>
 
-        <!-- HTML 공통 파일 포함 -->
-        <script>
-            includeHTML();
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
+      <!-- HTML 공통 파일 포함 -->
+      <script>
+        includeHTML();
+      </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          var lobbylist = document.getElementById('lobbylist');
+          var socket = io.connect('http://localhost:3001/lobby');
+          console.log(socket);
 
-                var lobbylist = document.getElementById('lobbylist');
-                var socket = io.connect("http://localhost:3001/lobby");
-                console.log(socket);
+          socket.on('nothing', () => {
+            lobbylist.innerHTML = '방송이 없습니다.';
+          });
 
-                socket.on('nothing', () => {
-                    lobbylist.innerHTML = '방송이 없습니다.';
-                });
+          socket.on('stream_room', data => {
+            Object.keys(data).forEach(element => {
+              lobbylist.innerHTML = '';
+              var atag = document.createElement('a');
+              atag.classList.add('col');
+              atag.classList.add('s12');
+              atag.href = 'video-viewer.html?id=' + data[element].sessionid;
+              var carddiv = document.createElement('div');
+              carddiv.classList.add('card');
+              carddiv.classList.add('hoverable');
+              var cardcontentdiv = document.createElement('div');
+              cardcontentdiv.classList.add('card-content');
+              var cardtitletext = document.createElement('div');
+              cardtitletext.classList.add('card-title');
+              cardtitletext.classList.add('black-text');
+              cardtitletext.classList.add('dohyeon-font');
+              cardtitletext.innerHTML = data[element].title;
+              var cardcontenttext = document.createElement('p');
+              cardcontenttext.classList.add('truncate');
+              cardcontenttext.classList.add('black-text');
+              cardcontenttext.classList.add('right-align');
+              cardcontenttext.innerHTML = '시청자 수 : ' + data[element].watchcount;
 
-                socket.on('stream_room', (data) => {
-                    Object.keys(data).forEach(element => {
-                        lobbylist.innerHTML = "";
-                        var atag = document.createElement("a");
-                        atag.classList.add("col");
-                        atag.classList.add("s12");
-                        atag.href = 'video-viewer.html?id=' + data[element].sessionid;
-                        var carddiv = document.createElement("div");
-                        carddiv.classList.add("card");
-                        carddiv.classList.add("hoverable");
-                        var cardcontentdiv = document.createElement("div");
-                        cardcontentdiv.classList.add("card-content");
-                        var cardtitletext = document.createElement("div");
-                        cardtitletext.classList.add("card-title");
-                        cardtitletext.classList.add("black-text");
-                        cardtitletext.classList.add("dohyeon-font");
-                        cardtitletext.innerHTML = data[element].title;
-                        var cardcontenttext = document.createElement("p");
-                        cardcontenttext.classList.add("truncate");
-                        cardcontenttext.classList.add("black-text");
-                        cardcontenttext.classList.add("right-align");
-                        cardcontenttext.innerHTML = "시청자 수 : " + data[element].watchcount;
+              cardcontentdiv.appendChild(cardtitletext);
+              // cardcontentdiv.appendChild(cardcontenttext);
+              carddiv.appendChild(cardcontentdiv);
+              atag.appendChild(carddiv);
 
-                        cardcontentdiv.appendChild(cardtitletext);
-                        // cardcontentdiv.appendChild(cardcontenttext);
-                        carddiv.appendChild(cardcontentdiv);
-                        atag.appendChild(carddiv);
-
-                        lobbylist.appendChild(atag);
-                    });
-                });
-
-
+              lobbylist.appendChild(atag);
             });
-        </script>
+          });
+        });
+      </script>
 
-        <script>
-            var getCookie = function(name) {
-                var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-                return value ? value[2] : null;
-            };
-            $(document).ready(function() {
-                var userinfo = document.getElementById('userinfo');
-                console.log(document.getElementById('userinfo'));
-                if (getCookie('id') == 'admin') {
-                    var infoatag = document.createElement("a");
-                    infoatag.classList.add("grey-text");
-                    infoatag.classList.add("text-darken-4");
-                    infoatag.setAttribute('href', '//localhost/userinfo/sitemaster.html');
-                    infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
+      <script>
+        var getCookie = function(name) {
+          var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+          return value ? value[2] : null;
+        };
+        $(document).ready(function() {
+          var userinfo = document.getElementById('userinfo');
+          console.log(document.getElementById('userinfo'));
+          if (getCookie('id') == 'admin') {
+            var infoatag = document.createElement('a');
+            infoatag.classList.add('grey-text');
+            infoatag.classList.add('text-darken-4');
+            infoatag.setAttribute('href', '//localhost/userinfo/sitemaster.html');
+            infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
 
-                    var infoitag = document.createElement("i");
-                    infoitag.classList.add("material-icons");
-                    infoitag.classList.add("left");
-                    infoitag.classList.add("grey-text");
-                    infoitag.classList.add("text-darken-4");
-                    infoitag.innerHTML = 'person';
+            var infoitag = document.createElement('i');
+            infoitag.classList.add('material-icons');
+            infoitag.classList.add('left');
+            infoitag.classList.add('grey-text');
+            infoitag.classList.add('text-darken-4');
+            infoitag.innerHTML = 'person';
 
-                    infoatag.appendChild(infoitag);
-                    userinfo.appendChild(infoatag);
+            infoatag.appendChild(infoitag);
+            userinfo.appendChild(infoatag);
+          } else if (getCookie('id').length == 0) {
+            var infoatag = document.createElement('a');
+            infoatag.classList.add('grey-text');
+            infoatag.classList.add('text-darken-4');
+            infoatag.setAttribute('href', '//localhost/login.html');
 
-                } else if (getCookie('id').length == 0) {
-                    var infoatag = document.createElement("a");
-                    infoatag.classList.add("grey-text");
-                    infoatag.classList.add("text-darken-4");
-                    infoatag.setAttribute('href', '//localhost/login.html');
+            var infoitag = document.createElement('i');
+            infoitag.classList.add('material-icons');
+            infoitag.classList.add('left');
+            infoitag.classList.add('grey-text');
+            infoitag.classList.add('text-darken-4');
+            infoitag.innerHTML = 'person';
+            infoatag.appendChild(infoitag);
+            userinfo.appendChild(infoatag);
+          } else {
+            var infoatag = document.createElement('a');
+            infoatag.classList.add('grey-text');
+            infoatag.classList.add('text-darken-4');
+            infoatag.setAttribute('href', '//localhost/userinfo/myinfo.html');
+            infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
 
-                    var infoitag = document.createElement("i");
-                    infoitag.classList.add("material-icons");
-                    infoitag.classList.add("left");
-                    infoitag.classList.add("grey-text");
-                    infoitag.classList.add("text-darken-4");
-                    infoitag.innerHTML = 'person';
-                    infoatag.appendChild(infoitag);
-                    userinfo.appendChild(infoatag);
-                } else {
-                    var infoatag = document.createElement("a");
-                    infoatag.classList.add("grey-text");
-                    infoatag.classList.add("text-darken-4");
-                    infoatag.setAttribute('href', '//localhost/userinfo/myinfo.html');
-                    infoatag.innerHTML = decodeURIComponent(getCookie('nick')) + ' 님';
+            var infoitag = document.createElement('i');
+            infoitag.classList.add('material-icons');
+            infoitag.classList.add('left');
+            infoitag.classList.add('grey-text');
+            infoitag.classList.add('text-darken-4');
+            infoitag.innerHTML = 'person';
 
-                    var infoitag = document.createElement("i");
-                    infoitag.classList.add("material-icons");
-                    infoitag.classList.add("left");
-                    infoitag.classList.add("grey-text");
-                    infoitag.classList.add("text-darken-4");
-                    infoitag.innerHTML = 'person';
-
-                    infoatag.appendChild(infoitag);
-                    userinfo.appendChild(infoatag);
-                }
-            });
-        </script>
+            infoatag.appendChild(infoitag);
+            userinfo.appendChild(infoatag);
+          }
+        });
+      </script>
     </main>
-</body>
-
+  </body>
 </html>
