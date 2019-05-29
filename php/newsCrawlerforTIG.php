@@ -1,6 +1,6 @@
 <?php
-include $_SERVER["DOCUMENT_ROOT"] . '/php/simplehtmldom/simple_html_dom.php';
-require_once $_SERVER["DOCUMENT_ROOT"] . '/php/connectDB.php';
+include '/var/www/html/php/simplehtmldom/simple_html_dom.php';
+require_once '/var/www/html/php/connectDB.php';
 
 // URL 내의 body 페이지를 가져오는 함수
 function get_content($url)
@@ -32,7 +32,7 @@ $today = date("Ymd");
 // 1. 우선 CURL 에 있는 내용을 컴퓨터에 저장
 // 여기를 바꾸면 다른 회사것을 가져올 수 있음 : here2!!
 $curlfile = get_content('https://news.naver.com/main/list.nhn?mode=LPOD&mid=sec&oid=439&date=' . ($today - 1));
-$localfile = fopen($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list_tig.html', 'w');
+$localfile = fopen('/var/www/html/savenews/' . ($today - 1) . '_list_tig.html', 'w');
 fwrite($localfile, $curlfile);
 fclose($localfile);
 
@@ -40,7 +40,7 @@ fclose($localfile);
 // 완전히 저장 된 후 아래 작업 시작을 위해 sleep 적용
 sleep(1);
 // html 파일을 simple dom parser 를 사용해서 a 태그 안의 href 만 가져옴
-$html = file_get_html($_SERVER['DOCUMENT_ROOT'] . '/savenews/' . ($today - 1) . '_list_tig.html');
+$html = file_get_html('/var/www/html/savenews/' . ($today - 1) . '_list_tig.html');
 $linklist;
 foreach ($html->find('div.list_body li a') as $value) {
     $linklist[] = $value->href;
@@ -61,7 +61,7 @@ foreach (array_unique($linklist) as $value) {
 
 // 3. 주소에 따라 뉴스 내용 html 로 저장하기
 // 데이터가 저장될 경로 설정
-$folder = $_SERVER["DOCUMENT_ROOT"] . '/savenews/tig/' . ($today - 1);
+$folder = '/var/www/html/savenews/tig/' . ($today - 1);
 
 // 위에서 가져온 뉴스 URL 을 크롤링해서 서버에 직접 저장
 for ($i = 0; $i < sizeof($newsUrlList); $i++) {
@@ -98,8 +98,8 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
         echo $dateDB = str_replace(".","-",str_replace("오전 ","",$dateText)). ":00";
     } else { // 오후일 경우 시간에 +12 붙여서 정리
         $newsdate = substr($dateText,0,10);
-        $newshour = substr($dateText,18,2) + 12;
-        $newsmin = substr($dateText,20,3);
+        $newshour = substr($dateText,19,2) + 12;
+        $newsmin = substr($dateText,21,3);
         $dateDB = str_replace(".","-",$newsdate)." ".$newshour.$newsmin. ":00";
     }
     // 원본링크

@@ -40,7 +40,7 @@ fclose($localfile);
 // 완전히 저장 된 후 아래 작업 시작을 위해 sleep 적용
 sleep(1);
 // html 파일을 simple dom parser 를 사용해서 a 태그 안의 href 만 가져옴
-$html = file_get_html('/var/www/html/savenews' . ($today - 1) . '_list.html');
+$html = file_get_html('/var/www/html/savenews/' . ($today - 1) . '_list.html');
 $linklist;
 foreach ($html->find('div.list_body li a') as $value) {
     $linklist[] = $value->href;
@@ -93,13 +93,13 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
     $titleDB = trim($html->find('div.news_headline h4', 0)->plaintext);
     // 기사입력일시
     $dateText = str_replace("기사입력 ","", trim($html->find('div.news_headline div.info span', 0)->plaintext));
-
     if(strpos($dateText,"오전")){// 오전일 경우
         echo $dateDB = str_replace(".","-",str_replace("오전 ","",$dateText)). ":00";
+        echo $dateDB;
     } else { // 오후일 경우 시간에 +12 붙여서 정리
         $newsdate = substr($dateText,0,10);
-        $newshour = substr($dateText,18,2) + 12;
-        $newsmin = substr($dateText,20,3);
+        $newshour = substr($dateText,19,2) + 12;
+        $newsmin = substr($dateText,21,3);
         $dateDB = str_replace(".","-",$newsdate)." ".$newshour.$newsmin. ":00";
     }
     // 원본링크
@@ -165,7 +165,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
         $contentDB = str_replace("'", "\'", $contentDB);
     
          //sql 쿼리문 만들기
-         $sql = "INSERT INTO reviewList (
+         $sql = "INSERT INTO test (
             title,
             mainimg,
             reg_date,
@@ -182,17 +182,17 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                 '" . $precontentDB . "',
                 '" . $contentDB . "'
             ) AS tmp
-            WHERE NOT EXISTS (SELECT * FROM reviewList WHERE refurl = '" . $refurlDB . "') LIMIT 1";
+            WHERE NOT EXISTS (SELECT * FROM test WHERE refurl = '" . $refurlDB . "') LIMIT 1";
             // 쿼리문 실행 및 결과 출력
             $result = mysqli_query($conn, $sql);
             if ($result) {
-                echo "New record created successful<br>";
+                echo "New record created successful";
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($conn);
                 break;
             }
     } else {
-        echo "data is null!<br>";
+        echo "data is null!";
     }
     // php 메모리 부하가 올 수 있으므로 다 쓴 html 문서는 메모리에서 삭제시킨다.
     $html->clear();

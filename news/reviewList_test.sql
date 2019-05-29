@@ -1,4 +1,4 @@
-CREATE TABLE newsList (
+CREATE TABLE reviewList (
   listidx int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '리뷰 번호',
   title varchar(256) NOT NULL COMMENT '제목',
   views int(11) NOT NULL DEFAULT 0,
@@ -11,7 +11,7 @@ CREATE TABLE newsList (
   UNIQUE (listidx)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO newsList (
+INSERT INTO reviewList (
     title, 
     mainimg, 
     reg_date, 

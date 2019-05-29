@@ -40,7 +40,7 @@ fclose($localfile);
 // 완전히 저장 된 후 아래 작업 시작을 위해 sleep 적용
 sleep(1);
 // html 파일을 simple dom parser 를 사용해서 a 태그 안의 href 만 가져옴
-$html = file_get_html('/var/www/html/savenews' . ($today - 1) . '_list.html');
+$html = file_get_html('/var/www/html/savenews/' . ($today - 1) . '_list.html');
 $linklist;
 foreach ($html->find('div.list_body li a') as $value) {
     $linklist[] = $value->href;
@@ -93,7 +93,6 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
     $titleDB = trim($html->find('div.news_headline h4', 0)->plaintext);
     // 기사입력일시
     $dateText = str_replace("기사입력 ","", trim($html->find('div.news_headline div.info span', 0)->plaintext));
-
     if(strpos($dateText,"오전")){// 오전일 경우
         echo $dateDB = str_replace(".","-",str_replace("오전 ","",$dateText)). ":00";
         echo $dateDB;
