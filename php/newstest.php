@@ -98,8 +98,8 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
         echo $dateDB;
     } else { // 오후일 경우 시간에 +12 붙여서 정리
         $newsdate = substr($dateText,0,10);
-        $newshour = substr($dateText,18,2) + 12;
-        $newsmin = substr($dateText,20,3);
+        $newshour = substr($dateText,19,2) + 12;
+        $newsmin = substr($dateText,21,3);
         $dateDB = str_replace(".","-",$newsdate)." ".$newshour.$newsmin. ":00";
         echo $dateDB;
     }

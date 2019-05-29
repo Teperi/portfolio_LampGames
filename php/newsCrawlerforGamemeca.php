@@ -165,7 +165,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
         $contentDB = str_replace("'", "\'", $contentDB);
     
          //sql 쿼리문 만들기
-         $sql = "INSERT INTO test (
+         $sql = "INSERT INTO reviewList (
             title,
             mainimg,
             reg_date,
@@ -182,7 +182,7 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
                 '" . $precontentDB . "',
                 '" . $contentDB . "'
             ) AS tmp
-            WHERE NOT EXISTS (SELECT * FROM test WHERE refurl = '" . $refurlDB . "') LIMIT 1";
+            WHERE NOT EXISTS (SELECT * FROM reviewList WHERE refurl = '" . $refurlDB . "') LIMIT 1";
             // 쿼리문 실행 및 결과 출력
             $result = mysqli_query($conn, $sql);
             if ($result) {
