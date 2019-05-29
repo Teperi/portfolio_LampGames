@@ -22,3 +22,16 @@ VALUES ('admin', '관리자', 'test@test.com', '11', '1');
 INSERT INTO user_info (id, nickName, email, password)
 VALUES ('ssss', '테스트2', 'test2@test.com', '11');
 
+
+-- 리뷰 테스트 만들기(연습용)
+CREATE TABLE test (
+    listidx int(11) NOT NULL AUTO_INCREMENT  PRIMARY KEY ,
+    title varchar(255) NOT NULL,
+    views int(11) NOT NULL DEFAULT 0,
+    precontent varchar(512) NOT NULL,
+    mainimg varchar(512) NOT NULL,
+    reg_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ref varchar(20) NOT NULL,
+    refurl varchar(512) NOT NULL,
+    content text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
