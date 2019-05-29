@@ -1,5 +1,5 @@
 <?php
-include $_SERVER["DOCUMENT_ROOT"] . '/php/simplehtmldom/simple_html_dom.php';
+include '/var/www/html/php/simplehtmldom/simple_html_dom.php';
 require_once $_SERVER["DOCUMENT_ROOT"] . '/php/connectDB.php';
 
 // URL 내의 body 페이지를 가져오는 함수

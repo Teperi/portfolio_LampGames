@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result === true) {
         echo "<script>
             alert('회원가입이 완료되었습니다.');
-            document.location.href='../index.html'
+            document.location.href='../index.php'
             </script>";
     } else {
         echo "<script>

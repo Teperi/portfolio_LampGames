@@ -39,7 +39,7 @@ if (mysqli_num_rows($result_sql) > 0) {
 
                 </div>
                 <div class="col s12">
-                    <a href="/news/news.html" class="waves-effect waves-light btn col s4 push-s1 teal lighten-2 dohyeon-font">뉴스 페이지로 돌아가기</a>
+                    <a href="/news/news.php" class="waves-effect waves-light btn col s4 push-s1 teal lighten-2 dohyeon-font">뉴스 페이지로 돌아가기</a>
                     <a href="#top" class="waves-effect waves-light btn col s4 push-s3 teal lighten-2 dohyeon-font">맨 위로 올라가기</a>
                 </div>
             </div>
@@ -57,7 +57,7 @@ if (mysqli_num_rows($result_sql) > 0) {
                         <hr>
                         <div id="newsList_content">
                             <p class="center-align">
-                                <a href="/news/news.html" class="waves-effect waves-light btn teal lighten-2 dohyeon-font">리뷰 페이지로 돌아가기</a>
+                                <a href="/news/news.php" class="waves-effect waves-light btn teal lighten-2 dohyeon-font">리뷰 페이지로 돌아가기</a>
                             </p>
                         </div>
                     </div>

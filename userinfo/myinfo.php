@@ -38,7 +38,7 @@
                 <ul class="collection with-header" id="newsList">
                     <li class="collection-header">
                         <p>
-                            <a class="waves-effect waves-light btn right" href="/login.html">로그아웃</a>
+                            <a class="waves-effect waves-light btn right" href="/login.php">로그아웃</a>
                             <h5 class="dohyeon-font">ID :
                                 <?php echo $_SESSION['user_id']; ?>
                             </h5>

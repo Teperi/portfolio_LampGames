@@ -21,7 +21,7 @@ if (mysqli_num_rows($result_sql) > 0) {
             $categoryColor = 'purple';
         }
 
-        echo '<a href="/news/news_content.html?listidx=' . $row['listidx'] . '">
+        echo '<a href="/news/news_content.php?listidx=' . $row['listidx'] . '">
                     <div class="card horizontal hoverable cardHorizen">
                         <div class="card-image col s3" style="padding:0px">
                             <img src="' . $row['mainimg'] . '" class="cardHorizenImg">

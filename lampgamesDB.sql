@@ -24,7 +24,7 @@ VALUES ('ssss', '테스트2', 'test2@test.com', '11');
 
 
 -- 리뷰 테스트 만들기(연습용)
-CREATE TABLE test (
+CREATE TABLE reviewList (
     listidx int(11) NOT NULL AUTO_INCREMENT  PRIMARY KEY ,
     title varchar(255) NOT NULL,
     views int(11) NOT NULL DEFAULT 0,

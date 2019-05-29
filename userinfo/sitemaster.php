@@ -36,7 +36,7 @@
                         <li class="collection-header">
                             <p>
                                 <h4 style="display:inline">뉴스 관리</h4>
-                                <a class="waves-effect waves-light btn right" href="/login.html">로그아웃</a>
+                                <a class="waves-effect waves-light btn right" href="/login.php">로그아웃</a>
                             </p>
                         </li>
                         <li class="collection-item">

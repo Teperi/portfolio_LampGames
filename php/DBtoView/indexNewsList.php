@@ -14,7 +14,7 @@ if (mysqli_num_rows($result) > 0) {
         }
 
         echo '<div class="col s12 m6 l3">
-            <a href="/news/news_content.html?listidx=' . $row['listidx'] . '">
+            <a href="/news/news_content.php?listidx=' . $row['listidx'] . '">
                 <div class="card hoverable">
                     <div class="card-image cardVerticalImgDiv">
                         <img class="cardVerticalImg" src="' . $row['mainimg'] . '">

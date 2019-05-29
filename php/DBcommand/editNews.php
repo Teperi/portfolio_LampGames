@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result) {
         echo "<script>
                 alert('\"$gettitle\" \\n수정이 완료되었습니다.');
-                document.location.href='/news/news_content.html?listidx=$getidx'
+                document.location.href='/news/news_content.php?listidx=$getidx'
             </script>";
     } else {
         echo "<script>

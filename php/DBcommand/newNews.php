@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result) {
         echo "<script>
                 alert('\"$gettitle\" \\등록이 완료되었습니다.');
-                document.location.href='/news/news.html'
+                document.location.href='/news/news.php'
             </script>";
     } else {
         echo "<script>

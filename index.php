@@ -97,7 +97,7 @@
 
           <a
             class="waves-effect waves-light btn-large col s12 hoverable jua-font"
-            href="/news/news.html"
+            href="/news/news.php"
             style="font-size:large;"
           >
             더보기
