@@ -95,7 +95,9 @@ for ($i = 0; $i < sizeof($newsUrlList); $i++) {
     $dateText = str_replace("기사입력 ","", trim($html->find('div.news_headline div.info span', 0)->plaintext));
 
     if(strpos($dateText,"오전")){// 오전일 경우
-        echo $dateDB = str_replace(".","-",str_replace("오전 ","",$dateText)). ":00";
+        $newsdate = substr($dateText,0,10);
+        $newstime = substr($dateText,19,5);
+        $dateDB = str_replace(".","-",$newsdate)." ".$newstime. ":00";
     } else { // 오후일 경우 시간에 +12 붙여서 정리
         $newsdate = substr($dateText,0,10);
         $newshour = substr($dateText,19,2) + 12;
