@@ -75,7 +75,7 @@
           </div>
 
           <div class="col s12 m6 l3">
-            <a href="http://localhost:3000/shootergame/shooter.html">
+            <a href="http://54.180.115.109:8080/shootergame/">
               <div class="card hoverable">
                 <div class="card-image cardVerticalImgDiv">
                   <img class="cardVerticalImg" src="/images/tankgame.png" />
