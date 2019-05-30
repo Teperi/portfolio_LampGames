@@ -106,7 +106,7 @@ var StartPage = new Phaser.Class({
     }
 
     var self = this;
-
+    $(document).unbind();
     $(document).bind('keydown', function(e) {
       if (e.keyCode == 8) {
         // backspace
@@ -158,6 +158,14 @@ var Game = new Phaser.Class({
   },
 
   create: function() {
+    $(document).unbind();
+    $(document).bind('keydown', function(e) {
+      if (e.keyCode == 8) {
+        // backspace
+
+        e.preventDefault();
+      }
+    });
     nowscene = 'Game';
     console.log('%c Game ', 'background: green; color: white; display: block;');
     bullet_array = [];
